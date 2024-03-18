@@ -1,55 +1,33 @@
-=== Character Generator ===
-Contributors:      The WordPress Contributors
-Tags:              block
-Tested up to:      6.1
-Stable tag:        0.1.0
-License:           GPL-2.0-or-later
-License URI:       https://www.gnu.org/licenses/gpl-2.0.html
+# Character Generator
 
-Permet de générer des PNJs
+Contributors: The WordPress Contributors
 
-== Description ==
+Tags: plugin
 
-This is the long description. No limit, and you can use Markdown (as well as in the following sections).
+Tested up to: 6.1
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Stable tag: 0.1.0
 
-== Installation ==
+License: GPL-2.0-or-later
 
-This section describes how to install the plugin and get it working.
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-e.g.
+## Description
 
-1. Upload the plugin files to the `/wp-content/plugins/character-generator` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
+Plugin wordpress permettant de générer et sauvegarder des PNJs pour Cyberpunk RED, Vampire 5e et D&D 5e
 
+## Exemples de résultats
 
-== Frequently Asked Questions ==
+Ecran de génération
 
-= A question that someone might have =
+![Fiche de génération de personnages](assets/image.png)
 
-An answer to that question.
+Ecran des personnages
 
-= What about foo bar? =
+![Liste des personnages sauvegardés](assets/image-1.png)
 
-Answer to foo bar dilemma.
-
-== Screenshots ==
-
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
-
-== Changelog ==
+# Changelog
 
 = 0.1.0 =
-* Release
 
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above. This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation." Arbitrary sections will be shown below the built-in sections outlined above.
+- Release
