@@ -17,6 +17,7 @@ import axios from 'axios';
 import { Grid } from '@mui/material';
 
 const queryClient = new QueryClient();
+const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : 'https://initiative.knaudin.fr/wp-json';
 
 const Generator = () => {
 
@@ -35,6 +36,7 @@ const Generator = () => {
     const [systems, setSystems] = useState([])
     const [dataFetched, setDataFetched] = useState(false)
     const [systemToRender, setSystemToRender] = useState("1");
+    const [systemSelectDisabled, setSystemSelectDisabled] = useState(false);
     const [signal, setSignal] = useState()
 
     const [snackState, setSnackState] = useState({
@@ -79,7 +81,7 @@ const Generator = () => {
     );
 
     const fetchSystems = async () => {
-        const response = await axios.get('/wordpress/wp-json/cg/v1/Systems');
+        const response = await axios.get(prefix + '/cg/v1/Systems');
         fetchCharacter();
         setSystems(response.data)
         setDataFetched(true);
@@ -91,10 +93,11 @@ const Generator = () => {
         const characterId = urlParams.get('value')
 
         if (characterId !== null) {
-            const response = await axios.get('/wordpress/wp-json/cg/v1/Character?id=' + characterId);
+            const response = await axios.get(prefix + '/cg/v1/Character?id=' + characterId);
             let character = response.data[0];
             setCharacterState({ ...characterState, system: character.systemId, name: character.name, cg_obj: JSON.parse(character.cg_obj), id: characterId })
-            renderGenerator(character.systemId);
+            setSystemToRender(character.systemId);
+            setSystemSelectDisabled(true);
         }
 
         setIsLoading(false);
@@ -105,7 +108,7 @@ const Generator = () => {
 
     var mutation = useMutation({
         mutationFn: () => {
-            return axios.post('/wordpress/wp-json/cg/v1/Save', JSON.stringify(characterState), {
+            return axios.post(prefix + '/cg/v1/Save', JSON.stringify(characterState), {
                 headers: {
                     "Content-Type": "application/json; charset= UTF-8",
                     'X-WP-Nonce': window.wpnonce
@@ -119,7 +122,7 @@ const Generator = () => {
     const generateCharacter = async () => {
         let nameChecked = document.querySelector('[value="characterName_checkbox"]').checked;
         if (!nameChecked) {
-            const response = await axios.get('/wordpress/wp-json/cg/v1/RandomName?system=' + characterState.system);
+            const response = await axios.get(prefix + '/cg/v1/RandomName?system=' + characterState.system);
             setCharacterState({ ...characterState, name: response.data["name"] })
         }
         setSignal(Date.now())
@@ -132,7 +135,7 @@ const Generator = () => {
             case "2":
                 return <h1>Cyberpunk RED</h1>
             case "3":
-                return <VampireGenerator signal={signal} update={updateCgObj} />
+                return <VampireGenerator signal={signal} update={updateCgObj} startingCgObj={characterState.cg_obj} />
         }
 
     };
@@ -149,6 +152,7 @@ const Generator = () => {
                         id="cg-data-system"
                         select
                         label="Système"
+                        disabled={systemSelectDisabled}
                         defaultValue={1}
                         value={characterState.system}
                         onChange={(e) => { setCharacterState({ ...characterState, system: e.target.value }); setSignal(null); setSystemToRender(e.target.value); }}
@@ -163,9 +167,8 @@ const Generator = () => {
                 </Grid>
                 <Grid item xs={12} sx={{ m: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <div>
-                        <VampireGenerator signal={signal} update={updateCgObj} startingCgObj={characterState.cg_obj} />
                         {
-                            //renderGenerator(systemToRender)
+                            renderGenerator(systemToRender)
                         }
                     </div>
                 </Grid>

@@ -14,14 +14,15 @@ CREATE TABLE IF NOT EXISTS wp_cg_systems (
 /
 CREATE TABLE IF NOT EXISTS wp_cg_characters_systems (
         id mediumint(9) NOT NULL AUTO_INCREMENT,
-        characterId mediumint(9) NOT NULL,
-		systemId mediumint(9) NOT NULL,
+        characterId int NOT NULL,
+		systemId int NOT NULL,
         PRIMARY KEY  (id),
 		INDEX(systemId),
-		
-		FOREIGN KEY (characterId) REFERENCES wp_cg_characters(id),
-		
-		FOREIGN KEY (systemId) REFERENCES wp_cg_systems(id)
+		FOREIGN KEY (characterId)
+		REFERENCES wp_cg_characters(id),
+
+		FOREIGN KEY (systemId)
+		REFERENCES wp_cg_systems(id)
 );
 /
 CREATE TABLE IF NOT EXISTS wp_cg_v5e_names(

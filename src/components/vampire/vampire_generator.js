@@ -7,7 +7,8 @@ import { Clan, Predation } from './vampire_enum';
 import { Grid, TextField, MenuItem } from '@mui/material';
 import CgCheckbox from '../checkbox/cg_checkbox';
 import axios from 'axios';
-import { useQuery } from '@tanstack/react-query';
+
+const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : 'https://initiative.knaudin.fr/wp-json';
 
 export default function VampireGenerator({ signal, update, startingCgObj }) {
 
@@ -33,7 +34,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
     ]
 
     const getRandomName = async () => {
-        const response = await axios.get('/wordpress/wp-json/cg/v1/RandomName?system=3');
+        const response = await axios.get(prefix + '/cg/v1/RandomName?system=3');
         return response.data["name"];
     }
 
@@ -112,19 +113,19 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                 cgObj.type == 1 && <Grid id="generator" container spacing={2} sx={{ width: '100%' }}>
                     <Grid item xl={4}>
                         <CgCheckbox name="predation" />
-                        <TextField label="Style de prédation" variant='standard' id="cg_field_predation" type="" value={cgObj.predation} onChange={(e) => setCgObj({ ...cgObj, predation: e.target.value })}></TextField>
+                        <TextField label="Style de prédation" variant='outlined' id="cg_field_predation" type="" value={cgObj.predation || ''} onChange={(e) => setCgObj({ ...cgObj, predation: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xl={4}>
                         <CgCheckbox name="clan" />
-                        <TextField label="Clan" variant='standard' id="cg_field_clan" type="" value={cgObj.clan} onChange={(e) => setCgObj({ ...cgObj, clan: e.target.value })}></TextField>
+                        <TextField label="Clan" variant='outlined' id="cg_field_clan" type="" value={cgObj.clan || ''} onChange={(e) => setCgObj({ ...cgObj, clan: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xl={4}>
                         <CgCheckbox name="sire" />
-                        <TextField label="Sire" variant='standard' id="cg_field_sire" type="" value={cgObj.sire} onChange={(e) => setCgObj({ ...cgObj, sire: e.target.value })}></TextField>
+                        <TextField label="Sire" variant='outlined' id="cg_field_sire" type="" value={cgObj.sire || ''} onChange={(e) => setCgObj({ ...cgObj, sire: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xl={4}>
                         <CgCheckbox name="generation" />
-                        <TextField label="Génération" variant='standard' id="cg_field_generation" type="" value={cgObj.generation} onChange={(e) => setCgObj({ ...cgObj, generation: e.target.value })}></TextField>
+                        <TextField label="Génération" variant='outlined' id="cg_field_generation" type="" value={cgObj.generation || ''} onChange={(e) => setCgObj({ ...cgObj, generation: e.target.value })}></TextField>
                     </Grid>
                 </Grid>
             }

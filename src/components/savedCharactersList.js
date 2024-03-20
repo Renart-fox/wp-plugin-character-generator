@@ -21,6 +21,7 @@ import axios from 'axios';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
+const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : 'https://initiative.knaudin.fr/wp-json';
 
 function createData(id, name, system) {
     return {
@@ -31,7 +32,7 @@ function createData(id, name, system) {
 }
 
 const fetchSavedCharacters = async () => {
-    const response = await fetch('/wordpress/wp-json/cg/v1/SavedCharacters');
+    const response = await fetch(prefix + '/cg/v1/SavedCharacters');
 
     return await response.json();
 }
@@ -183,7 +184,7 @@ function EnhancedTable() {
 
     var mutationDeleteCharacter = useMutation({
         mutationFn: (id) => {
-            return axios.post('/wordpress/wp-json/cg/v1/Delete', JSON.stringify({ id: id }), {
+            return axios.post(prefix + '/cg/v1/Delete', JSON.stringify({ id: id }), {
                 headers: {
                     "Content-Type": "application/json; charset= UTF-8"
                 }
