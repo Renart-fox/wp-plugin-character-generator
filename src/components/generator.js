@@ -56,6 +56,10 @@ const Generator = () => {
 
     const { vertical, horizontal, open } = snackState;
 
+    const updateCgObj = (cgObj) => {
+        console.log("Child updated cgObj to ", cgObj);
+        setCharacterState({ ...characterState, cg_obj: cgObj })
+    }
 
     const handleSnackClose = (event, reason) => {
         setSnackState({ ...snackState, open: false })
@@ -89,7 +93,7 @@ const Generator = () => {
         if (characterId !== null) {
             const response = await axios.get('/wordpress/wp-json/cg/v1/Character?id=' + characterId);
             let character = response.data[0];
-            setCharacterState({ ...characterState, system: character.systemId, name: character.name, cg_obj: character.cg_obj, id: characterId })
+            setCharacterState({ ...characterState, system: character.systemId, name: character.name, cg_obj: JSON.parse(character.cg_obj), id: characterId })
             renderGenerator(character.systemId);
         }
 
@@ -128,7 +132,7 @@ const Generator = () => {
             case "2":
                 return <h1>Cyberpunk RED</h1>
             case "3":
-                return <VampireGenerator signal={signal} />
+                return <VampireGenerator signal={signal} update={updateCgObj} />
         }
 
     };
@@ -159,8 +163,9 @@ const Generator = () => {
                 </Grid>
                 <Grid item xs={12} sx={{ m: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <div>
+                        <VampireGenerator signal={signal} update={updateCgObj} startingCgObj={characterState.cg_obj} />
                         {
-                            renderGenerator(systemToRender)
+                            //renderGenerator(systemToRender)
                         }
                     </div>
                 </Grid>

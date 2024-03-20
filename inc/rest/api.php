@@ -86,10 +86,20 @@ function save($request){
     $name = $params['name'];
     $cg_obj = json_encode($params['cg_obj']);
     $system = $params['system'];
-    //$id = $params['id'];
-    
-    $wpdb->insert('wp_cg_characters', array ('cg_name' => $name, 'cg_obj' => $cg_obj));
-    $wpdb->insert('wp_cg_characters_systems', array ('characterId' => $wpdb->insert_id, 'systemId' => $system));
+    $id = $params['id'];
+
+    $myfile = fopen('myfile.txt', 'w');
+
+    if ($id == "-1")
+    {
+        $wpdb->insert('wp_cg_characters', array ('cg_name' => $name, 'cg_obj' => $cg_obj));
+        $wpdb->insert('wp_cg_characters_systems', array ('characterId' => $wpdb->insert_id, 'systemId' => $system));
+    }
+    else {
+        $res = $wpdb->update('wp_cg_characters', array ('cg_name' => $name, 'cg_obj' => $cg_obj), array ( 'id' => intval($id) ));
+        
+        fwrite($myfile, $cg_obj);
+    }
 
     return $params;
 }
