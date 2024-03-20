@@ -2,6 +2,9 @@ const { Component, render } = wp.element;
 import { useState, useEffect } from 'react';
 import { QueryClient, QueryClientProvider, useMutation, useQuery } from '@tanstack/react-query';
 
+import VampireGenerator from './vampire/vampire_generator';
+import CgCheckbox from './checkbox/cg_checkbox';
+
 import TextField from '@mui/material/TextField';
 import Box from '@mui/material/Box';
 import MenuItem from '@mui/material/MenuItem';
@@ -11,6 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
+import { Grid } from '@mui/material';
 
 const queryClient = new QueryClient();
 
@@ -30,7 +34,8 @@ const Generator = () => {
     const [isLoading, setIsLoading] = useState(true)
     const [systems, setSystems] = useState([])
     const [dataFetched, setDataFetched] = useState(false)
-    const [systemToRender, setSystemToRender] = useState(<h1>D&D5e</h1>);
+    const [systemToRender, setSystemToRender] = useState("1");
+    const [signal, setSignal] = useState()
 
     const [snackState, setSnackState] = useState({
         open: false,
@@ -108,55 +113,64 @@ const Generator = () => {
     })
 
     const generateCharacter = async () => {
-        const response = await axios.get('/wordpress/wp-json/cg/v1/RandomName?system=' + characterState.system);
-        setCharacterState({ ...characterState, name: response.data["name"] })
+        let nameChecked = document.querySelector('[value="characterName_checkbox"]').checked;
+        if (!nameChecked) {
+            const response = await axios.get('/wordpress/wp-json/cg/v1/RandomName?system=' + characterState.system);
+            setCharacterState({ ...characterState, name: response.data["name"] })
+        }
+        setSignal(Date.now())
     }
 
     const renderGenerator = (system) => {
         switch (system) {
             case "1":
-                setSystemToRender(<h1>D&D5e</h1>)
-                break;
+                return <h1>D&D5e</h1>
             case "2":
-                setSystemToRender(<h1>Cyberpunk RED</h1>)
-                break;
+                return <h1>Cyberpunk RED</h1>
             case "3":
-                setSystemToRender(<h1>Vampire : La Mascarade</h1>)
-                break;
+                return <VampireGenerator signal={signal} />
         }
 
     };
 
     return (
         !isLoading && <>
-            <Box
-                sx={{
-                    '& > :not(style)': { m: 2, width: '50ch' },
-                }}
-                noValidate
-                autoComplete="off">
-                <TextField id="cg-data-characterName" label="Nom du personnage" variant="standard" type="" defaultValue={characterState.name} value={characterState.name} onChange={(e) => { setCharacterState({ ...characterState, name: e.target.value }) }} />
-                <TextField
-                    id="cg-data-system"
-                    select
-                    label="Système"
-                    defaultValue={1}
-                    value={characterState.system}
-                    onChange={(e) => { setCharacterState({ ...characterState, system: e.target.value }); renderGenerator(e.target.value); }}
-                >
-                    {systems.map((option) => (
-                        <MenuItem key={option.ID} value={option.ID}>
-                            {translateSystemName(option.Systeme)}
-                        </MenuItem>
-                    ))}
-                </TextField>
-                {
-                    systemToRender
-                }
-                <br />
-                <Button variant="contained" onClick={() => generateCharacter()} sx={{ mr: '1rem' }}>Lancer les dés !</Button>
-                <Button variant="contained" onClick={() => { mutation.mutate() }}>Sauvegarder le personnage</Button>
-            </Box >
+            <Grid container spacing={0} sx={{ m: 2 }}>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <CgCheckbox name="characterName" />
+                    <TextField id="cg-data-characterName" label="Nom du personnage" variant="standard" type="" defaultValue={characterState.name} value={characterState.name} onChange={(e) => { setCharacterState({ ...characterState, name: e.target.value }) }} sx={{ minWidth: '50ch' }} />
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <TextField
+                        id="cg-data-system"
+                        select
+                        label="Système"
+                        defaultValue={1}
+                        value={characterState.system}
+                        onChange={(e) => { setCharacterState({ ...characterState, system: e.target.value }); setSignal(null); setSystemToRender(e.target.value); }}
+                        sx={{ minWidth: '50ch' }}
+                    >
+                        {systems.map((option) => (
+                            <MenuItem key={option.ID} value={option.ID}>
+                                {translateSystemName(option.Systeme)}
+                            </MenuItem>
+                        ))}
+                    </TextField>
+                </Grid>
+                <Grid item xs={12} sx={{ m: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <div>
+                        {
+                            renderGenerator(systemToRender)
+                        }
+                    </div>
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={() => generateCharacter()} sx={{ mr: '1rem' }}>Lancer les dés !</Button>
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={() => { mutation.mutate() }}>Sauvegarder le personnage</Button>
+                </Grid>
+            </Grid >
 
             <Snackbar
                 open={snackState.open}
