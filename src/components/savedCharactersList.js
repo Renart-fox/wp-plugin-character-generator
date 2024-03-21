@@ -21,7 +21,7 @@ import axios from 'axios';
 import { QueryClient, QueryClientProvider, useQuery, useMutation } from '@tanstack/react-query';
 
 const queryClient = new QueryClient();
-const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : 'https://initiative.knaudin.fr/wp-json';
+const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
 function createData(id, name, system) {
     return {

@@ -17,7 +17,7 @@ import axios from 'axios';
 import { Grid } from '@mui/material';
 
 const queryClient = new QueryClient();
-const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : 'https://initiative.knaudin.fr/wp-json';
+const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
 const Generator = () => {
 
@@ -165,7 +165,7 @@ const Generator = () => {
                         ))}
                     </TextField>
                 </Grid>
-                <Grid item xs={12} sx={{ m: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid item xs={12} sx={{ margin: "1rem 1rem 10rem 1rem", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <div>
                         {
                             renderGenerator(systemToRender)

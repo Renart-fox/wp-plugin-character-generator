@@ -16,6 +16,7 @@
 	"script": ["file:./components/savedCharactersList.js",
 		"file:./components/generator.js",
 		"file:./components/vampire/vampire_generator.js",
+		"file:./components/vampire/generator_tools.js",
 		"file:./components/vampire/vampire_enum.js",
 		"file:./components/checkbox/cg_checkbox.js"],
 	"editorStyle": "file:./index.css",
