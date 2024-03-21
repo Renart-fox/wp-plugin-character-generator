@@ -29,3 +29,33 @@ export const Predation = {
     9: 'Succube',
     10: 'Extortion'
 }
+
+export const Specializations = {
+    'gun': ["Arbalètes", "Vente", "Fabrication", "Chargement manuel de munitions", "Dégainage rapide", "Snipers", "Tirs acrobatiques"],
+    'animals': ["Entraînement à l'attaque", "Chats", "Chiens", "Fauconnerie", "Chevaux", "Apaisement", "Rats", "Serpents", "Entraînement aux tours", "Loups"],
+    'erudition': ["Architecture", "Littérature anglaise", "Histoire de l'art", "Histoire", "Journalisme", "Philosophie", "Recherche", "Enseignement", "Théologie"],
+    'craft': ["Menuiserie", "Gravure", "Design", "Peinture", "Sculpture", "Couture", "Forge d'armes"],
+    'command': ["Ordres", "Inspiration", "Discours", "Praxis", "Dynamique d'équipe", "Meute de guerre"],
+    'finance': ["Estimation", "Secteur bancaire", "Marchés noirs", "Manipulation des devises", "Oeuvres d'art", "Malversations", "Blanchiment d'argent", "Bourse"],
+    'athletism': ["Acrobaties", "Tir à l'arc", "Escalade", "Endurance", "Saut", "Parkour", "Natation", "Lancer"],
+    'empathy': ["Ambitions", "Désirs", "Détection des mensonges", "Émotions", "Réconfort", "Interrogatoire", "Motivations", "Phobies", "Vices"],
+    'investigation': ["Criminologie", "Déduction", "Médecine légale", "Personnes disparues", "Meurtres", "Mystères paranormaux", "Analyse du trafic sur internet"],
+    'brawl': ["Animaux", "Mortels armés", "Bagarres de bar", "Lutte", "Descendants", "Matchs de sport de combat", "Mortels désarmés", "Loup-Garous", "Sous forme de la Bête de Protéisme"],
+    'etiquette': ["Anarchs", "Camarilla", "Célébrités", "Corporations", "Elysium", "Étiquette féodale", "Milliardaires", "Société secrète"],
+    'medicine': ["Premiers soins", "Hématologie", "Pathologies infectieuses", "Pharmacopée", "Phlébotomie", "Chirurgie", "Traumatologie", "Médecine vétérinaire"],
+    'drive': ["Véhicules tout-terrain", "Fuite", "Motos", "Courses de rue", "Cascades", "Filature", "Camions", "Voitures anciennes"],
+    'night': ["Trafic d'armes", "Marché noir", "Corruption", "Drogues", "Recel", "Gangs", "Tags", "Réputation", "Prostitution", "Survie urbaine"],
+    'occult': ["Alchimie", "Magie du sang", "Fées", "Fantômes", "Grimoires", "Infernalisme", "Mages", "Nécromancie", "Nodisme", "Parapsychologie", "Vaudou", "Loups-Garous"],
+    'stealth': ["Embuscades", "Foules", "Déguisement", "Se cacher", "Filature", "Déplacement silencieux", "Ville", "Milieu sauvage"],
+    'intimidation': ["Racket", "Insultes", "Interrogatoire", "Coercition physique", "Baston de regards", "Menaces voilées"],
+    'politic': ["Anarchs", "Camarilla", "Gouvernement d'une ville", "Gouvernement d'un clan", "Diplomatie", "Médias", "Politique internationale", "Politique nationale", "Politique régionale"],
+    'sleight': ["Alarmes", "Contrefaçon", "Grand Theft Auto", "Effraction", "Crochetage", "Pickpocket", "Coffres-forts", "Analyse des mesures de sécurité"],
+    'representation': ["Comédie", "Danse", "Théâtre", "Batterie", "Guitare", "Claviers", "Poésie", "Allocutions publiques", "Rap", "Chant", "Violon", "Instruments à vent"],
+    'science': ["Astronomie", "Biologie", "Chimie", "Démolition", "Ingénierie", "Génétique", "Géologie", "Mathématiques", "Physique"],
+    'melee': ["Haches", "Chaînes", "Massue", "Escrime", "Désarmement", "Garrots", "Armes improvisées", "Couteux", "Pieux", "Épées"],
+    'persuasion': ["Marchandage", "Baratin", "Interrogatoire", "Plaidoirie", "Négociation", "Rhétorique"],
+    'tech': ["Artillerie", "Codage", "Assemblage d'ordinateur", "Extraction de données", "Piratage", "Réseaux", "Téléphones", "Système de surveillance"],
+    'survival': ["Désert", "Chasse", "Jungle", "Pistage", "Pièges", "Abris", "Exploration urbaine", "Forêt"],
+    'subterfuge': ["Bluff", "Apparence humaine", "Mensonges en béton", "Innocence", "Arnaque", "Séduction"],
+    'vigilance': ["Embuscades", "Camouflage", "Objets cachées", "Ouïe", "Intuition", "Odorat", "Vue", "Pièges", "Milieu sauvage"],
+}

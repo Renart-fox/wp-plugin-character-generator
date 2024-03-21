@@ -60,8 +60,11 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
             'survival': "0",
             'subterfuge': "0",
             'vigilance': "0",
-        }
+        },
+        'specs': []
     })
+
+    const [specsToRender, setSpecsToRender] = React.useState([]);
 
     const [setup, setSetup] = React.useState(false);
 
@@ -156,6 +159,8 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
         'vigilance': 'Vigilance',
     };
 
+    const compsLabels = Object.values(comps);
+
     const getRandomName = async () => {
         const response = await axios.get(prefix + '/cg/v1/RandomName?system=3');
         return response.data["name"];
@@ -183,7 +188,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
 
     const generate = async () => {
         let elementsToGenerate = document.querySelectorAll('[id^="cg_field_"]')
-        let newCgObj = cgObj;
+        let newCgObj = { ...cgObj };
         for (var element of elementsToGenerate) {
             if (element.tagName == 'INPUT') {
                 let simpleName = element.id.split('cg_field_')[1];
@@ -207,26 +212,29 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                         lockedElements.push(cName);
                     }
                 }
-                let valuesToSend = null;
-                switch (simpleName) {
-                    case 'attributes':
-                        valuesToSend = cgObj.attributes;
-                        break;
-                    case 'comps':
-                        valuesToSend = cgObj.comps;
-                        break;
-                }
-                let res = await cgUtils.executeFunctionByName(name, cgUtils, cgObj.type, cgObj.difficulty, lockedElements, valuesToSend);
-                newCgObj[simpleName] = res;
+                let res = await cgUtils.executeFunctionByName(name, cgUtils, cgObj.type, cgObj.difficulty, lockedElements, { ...newCgObj });
+                newCgObj = res;
             }
         }
         setCgObj({ ...newCgObj });
     }
 
     const changeObjValue = (type, key, value) => {
-        let newCgObj = cgObj;
+        let newCgObj = { ...cgObj };
         newCgObj[type][key] = value;
         setCgObj({ ...newCgObj });
+    }
+
+    const changeSpecCompValue = (ind, value) => {
+        let newCgObj = { ...cgObj };
+        newCgObj.specs[ind]['Comp'] = value;
+        setCgObj({ ...newCgObj })
+    }
+
+    const changeSpecSpecValue = (ind, value) => {
+        let newCgObj = { ...cgObj };
+        newCgObj.specs[ind]['Spec'] = value;
+        setCgObj({ ...newCgObj })
     }
 
     return (
@@ -328,7 +336,31 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                             )
                         })
                     }
-                </Grid>
+                    <Grid item xs={12}><h2>Spécialisations</h2></Grid>
+                    {
+                        cgObj.specs.map((spec, ind) => {
+                            let compsCopy = comps;
+                            return (
+                                <Grid item xs={6}>
+                                    <TextField
+                                        select
+                                        label="Compétences"
+                                        value={compsCopy[spec['Comp']] || ''}
+                                        onChange={(e) => { changeSpecCompValue(ind, e.target.value) }}
+                                        sx={{ minWidth: '50ch' }}
+                                    >
+                                        {compsLabels.map((comp) => (
+                                            <MenuItem key={comp} value={comp}>
+                                                {comp}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField label="Spécialisation" variant='outlined' type="" value={spec["Spec"] || ''} onChange={(e) => { changeSpecSpecValue(ind, e.target.value) }}></TextField>
+                                </Grid>
+                            )
+                        })
+                    }
+                </Grid >
             }
         </>
     )

@@ -1,4 +1,4 @@
-import { Clan, Predation } from './vampire_enum';
+import { Clan, Predation, Specializations } from './vampire_enum';
 import axios from 'axios';
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
@@ -79,7 +79,8 @@ export async function cg_vampire_blood(...args) {
 export async function cg_vampire_attributes(...args) {
     let difficulty = args[1];
     let lockedAttributes = args[2];
-    let newAttributes = args[3];
+    let newCgObj = args[3];
+    let newAttributes = newCgObj['attributes'];
     let attributesList = ['strength', 'dexterity', 'stamina', 'charisma', 'manipulation', 'composure', 'intelligence', 'cunning', 'resolve'];
     let points = [];
     switch (difficulty) {
@@ -121,13 +122,16 @@ export async function cg_vampire_attributes(...args) {
         let pointIndex = points.indexOf(pointToAttribute);
         points.splice(pointIndex, 1);
     }
-    return await newAttributes
+
+    newCgObj['attributes'] = newAttributes;
+    return await newCgObj;
 }
 
 export async function cg_vampire_comps(...args) {
     let difficulty = args[1];
     let lockedComps = args[2];
-    let newComps = args[3];
+    let cgObj = args[3];
+    let newComps = cgObj['comps']
     let compList = [
         'gun',
         'animals',
@@ -159,23 +163,28 @@ export async function cg_vampire_comps(...args) {
     ];
     let points = [];
     let maxComps = 0;
+    let specs = 0;
 
     switch (difficulty) {
         case 4:
             maxComps = 14;
+            specs = 1;
             points = ["4", "4", "3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 5:
             maxComps = 15;
+            specs = 3;
             points = ["5", "4", "4", "4", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2"];
             break;
         case 6:
             maxComps = 22;
+            specs = 5;
             points = ["5", "5", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2", "2", "2"];
             break;
         case 7:
-            maxComps = 29;
-            points = ["5", "5", "5", "5", "4", "4", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2", "2", "2"];
+            maxComps = 27;
+            specs = 8;
+            points = ["5", "5", "5", "5", "4", "4", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2"];
             break;
     }
 
@@ -206,5 +215,35 @@ export async function cg_vampire_comps(...args) {
         points.splice(pointIndex, 1);
     }
 
-    return await newComps;
+    cgObj["comps"] = newComps;
+
+    let specsAvailableForComp = []
+    for (var comp of Object.keys(newComps)) {
+        if (parseInt(newComps[comp]) > 0)
+            specsAvailableForComp.push(comp)
+    }
+
+    var specializationsCopy = JSON.parse(
+        JSON.stringify(Specializations),
+    );
+    console.log(specsAvailableForComp);
+    var newSpecs = [];
+
+    for (var i = 0; i < specs; i++) {
+        var comp = specsAvailableForComp[Math.floor(Math.random() * specsAvailableForComp.length)];
+        var spec = specializationsCopy[comp][Math.floor(Math.random() * specializationsCopy[comp].length)];
+        newSpecs.push({
+            'Comp': comp,
+            "Spec": spec
+        });
+
+        var indexComp = specsAvailableForComp.indexOf(comp);
+        specsAvailableForComp.splice(indexComp, 1);
+        var indexSpec = specializationsCopy[comp].indexOf(spec);
+        specializationsCopy[comp].splice(indexSpec, 1);
+    }
+
+    cgObj['specs'] = newSpecs;
+
+    return await cgObj;
 }
