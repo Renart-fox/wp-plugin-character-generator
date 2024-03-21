@@ -114,6 +114,48 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
         }
     ]
 
+    const attributes = {
+        'strength': 'Force',
+        'dexterity': 'Dextérité',
+        'stamina': 'Vigueur',
+        'charisma': 'Charisme',
+        'manipulation': 'Manipulation',
+        'composure': 'Sang-Froid',
+        'intelligence': 'Intelligence',
+        'cunning': 'Astuce',
+        'resolve': 'Résolution'
+    }
+
+    const comps = {
+        'gun': 'Armes à feu',
+        'animals': 'Animaux',
+        'erudition': 'Érudition',
+        'craft': 'Artisanat',
+        'command': 'Commandement',
+        'finance': 'Finances',
+        'athletism': 'Athlétisme',
+        'empathy': 'Empathie',
+        'investigation': 'Investigation',
+        'brawl': 'Bagarre',
+        'etiquette': 'Étiquette',
+        'medicine': 'Médecine',
+        'drive': 'Conduite',
+        'night': 'Éxpérience de la rue',
+        'occult': 'Occultisme',
+        'stealth': 'Furtivité',
+        'intimidation': 'Intimidation',
+        'politic': 'Politique',
+        'sleight': 'Larcin',
+        'representation': 'Performance',
+        'science': 'Sciences',
+        'melee': 'Mêlée',
+        'persuasion': 'Persuasion',
+        'tech': 'Technologies',
+        'survival': 'Survie',
+        'subterfuge': 'Subterfuge',
+        'vigilance': 'Vigilance',
+    };
+
     const getRandomName = async () => {
         const response = await axios.get(prefix + '/cg/v1/RandomName?system=3');
         return response.data["name"];
@@ -178,6 +220,12 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                 newCgObj[simpleName] = res;
             }
         }
+        setCgObj({ ...newCgObj });
+    }
+
+    const changeObjValue = (type, key, value) => {
+        let newCgObj = cgObj;
+        newCgObj[type][key] = value;
         setCgObj({ ...newCgObj });
     }
 
@@ -258,152 +306,28 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                     </Grid>
                     <div hidden id='cg_field_attributes' />
                     <Grid item xs={12}><h2>Attributs</h2></Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_strength" />
-                        <TextField label="Force" variant='outlined' type="" value={cgObj.attributes.strength || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, strength: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_charisma" />
-                        <TextField label="Charisme" variant='outlined' type="" value={cgObj.attributes.charisma || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, charisma: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_intelligence" />
-                        <TextField label="Intelligence" variant='outlined' type="" value={cgObj.attributes.intelligence || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, intelligence: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_dexterity" />
-                        <TextField label="Dextérité" variant='outlined' type="" value={cgObj.attributes.dexterity || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, dexterity: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_manipulation" />
-                        <TextField label="Manipulation" variant='outlined' type="" value={cgObj.attributes.manipulation || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, manipulation: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_cunning" />
-                        <TextField label="Astuce" variant='outlined' type="" value={cgObj.attributes.cunning || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, cunning: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_stamina" />
-                        <TextField label="Vigueur" variant='outlined' type="" value={cgObj.attributes.stamina || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, stamina: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_composure" />
-                        <TextField label="Sang-Froid" variant='outlined' type="" value={cgObj.attributes.composure || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, composure: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="attributes_resolve" />
-                        <TextField label="Résolution" variant='outlined' type="" value={cgObj.attributes.resolve || ''} onChange={(e) => setCgObj({ ...cgObj, attributes: { ...cgObj.attributes, resolve: e.target.value } })}></TextField>
-                    </Grid>
+                    {
+                        Object.keys(attributes).map((attr) => {
+                            return (
+                                <Grid item xs={4}>
+                                    <CgCheckbox name={"attributes_" + attr} />
+                                    <TextField label={attributes[attr]} variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
+                                </Grid>
+                            )
+                        })
+                    }
                     <div hidden id='cg_field_comps' />
                     <Grid item xs={12}><h2>Compétences</h2></Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_gun" />
-                        <TextField label="Armes à feu" variant='outlined' type="" value={cgObj.comps.gun || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, gun: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_animal" />
-                        <TextField label="Animaux" variant='outlined' type="" value={cgObj.comps.animals || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, animals: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_erudition" />
-                        <TextField label="Érudition" variant='outlined' type="" value={cgObj.comps.erudition || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, erudition: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_craft" />
-                        <TextField label="Artisanat" variant='outlined' type="" value={cgObj.comps.craft || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, craft: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_command" />
-                        <TextField label="Commandement" variant='outlined' type="" value={cgObj.comps.command || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, command: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_finance" />
-                        <TextField label="Finances" variant='outlined' type="" value={cgObj.comps.finance || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, finance: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_athletism" />
-                        <TextField label="Athlétisme" variant='outlined' type="" value={cgObj.comps.athletism || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, athletism: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_empathy" />
-                        <TextField label="Empathie" variant='outlined' type="" value={cgObj.comps.empathy || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, empathy: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_investigation" />
-                        <TextField label="Investigation" variant='outlined' type="" value={cgObj.comps.investigation || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, investigation: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_brawl" />
-                        <TextField label="Bagarre" variant='outlined' type="" value={cgObj.comps.brawl || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, brawl: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_etiquette" />
-                        <TextField label="Étiquette" variant='outlined' type="" value={cgObj.comps.etiquette || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, etiquette: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_medicine" />
-                        <TextField label="Médecine" variant='outlined' type="" value={cgObj.comps.medicine || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, medicine: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_drive" />
-                        <TextField label="Conduite" variant='outlined' type="" value={cgObj.comps.drive || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, drive: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_night" />
-                        <TextField label="Expérience de la rue" variant='outlined' type="" value={cgObj.comps.night || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, night: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_occult" />
-                        <TextField label="Occultisme" variant='outlined' type="" value={cgObj.comps.occult || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, occult: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_stealth" />
-                        <TextField label="Furtivité" variant='outlined' type="" value={cgObj.comps.stealth || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, stealth: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_intimidation" />
-                        <TextField label="Intimidation" variant='outlined' type="" value={cgObj.comps.intimidation || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, intimidation: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_politic" />
-                        <TextField label="Politique" variant='outlined' type="" value={cgObj.comps.politic || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, politic: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_sleight" />
-                        <TextField label="Larcin" variant='outlined' type="" value={cgObj.comps.sleight || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, sleight: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_representation" />
-                        <TextField label="Performance" variant='outlined' type="" value={cgObj.comps.representation || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, representation: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_science" />
-                        <TextField label="Sciences" variant='outlined' type="" value={cgObj.comps.science || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, science: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_melee" />
-                        <TextField label="Mêlée" variant='outlined' type="" value={cgObj.comps.melee || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, melee: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_persuasion" />
-                        <TextField label="Persuasion" variant='outlined' type="" value={cgObj.comps.persuasion || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, persuasion: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_tech" />
-                        <TextField label="Technologies" variant='outlined' type="" value={cgObj.comps.tech || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, tech: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_survival" />
-                        <TextField label="Survie" variant='outlined' type="" value={cgObj.comps.survival || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, survival: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_subterfuge" />
-                        <TextField label="Subterfuge" variant='outlined' type="" value={cgObj.comps.subterfuge || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, subterfuge: e.target.value } })}></TextField>
-                    </Grid>
-                    <Grid item xs={4}>
-                        <CgCheckbox name="comps_vigilance" />
-                        <TextField label="Vigilance" variant='outlined' type="" value={cgObj.comps.vigilance || ''} onChange={(e) => setCgObj({ ...cgObj, comps: { ...cgObj.comps, vigilance: e.target.value } })}></TextField>
-                    </Grid>
+                    {
+                        Object.keys(comps).map((comp) => {
+                            return (
+                                <Grid item xs={4}>
+                                    <CgCheckbox name={"comps_" + comp} />
+                                    <TextField label={comps[comp]} variant='outlined' type="" value={cgObj.comps[comp] || ''} onChange={(e) => { changeObjValue('comps', comp, e.target.value) }}></TextField>
+                                </Grid>
+                            )
+                        })
+                    }
                 </Grid>
             }
         </>
