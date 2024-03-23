@@ -118,6 +118,14 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
         }
     ]
 
+    useEffect(() => {
+        if (cgObj.type == 0 && cgObj.difficulty > 3)
+            setCgObj({ ...cgObj, difficulty: 0 })
+        else if (cgObj.type == 1 && cgObj.difficulty < 4) {
+            setCgObj({ ...cgObj, difficulty: 4 })
+        }
+    }, [cgObj.type])
+
     //const compsLabels = Object.values(comps);
 
     const getRandomName = async () => {
