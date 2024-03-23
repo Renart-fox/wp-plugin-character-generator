@@ -59,7 +59,7 @@ const Generator = () => {
     const { vertical, horizontal, open } = snackState;
 
     const updateCgObj = (cgObj) => {
-        console.log(cgObj)
+        //console.log(cgObj)
         setCharacterState({ ...characterState, cg_obj: cgObj })
     }
 

@@ -274,7 +274,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                             <TextField variant='outlined' id="cg_field_generation" type="" value={cgObj.generation || ''} onChange={(e) => setCgObj({ ...cgObj, generation: e.target.value })}></TextField>
                         </Grid>
                         <Grid item xs={4}>
-                            <h3>Points de Sang</h3>
+                            <h3>Puissance de Sang</h3>
                             <CgCheckbox name="blood" />
                             <TextField variant='outlined' id="cg_field_blood" type="" value={cgObj.blood || ''} onChange={(e) => setCgObj({ ...cgObj, blood: e.target.value })}></TextField>
                         </Grid>
@@ -289,7 +289,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                             <Grid item xs={4}>
                                 <h3>{Attributes[attr]}</h3>
                                 <CgCheckbox name={"attributes_" + attr} />
-                                <TextField variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
+                                <TextField variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, parseInt(e.target.value) > 5 ? 5 : parseInt(e.target.value)) }}></TextField>
                             </Grid>
                         )
                     })
@@ -303,7 +303,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                             <Grid item xs={4}>
                                 <h3>{skill['fullname']}</h3>
                                 <CgCheckbox name={"skills_" + skill['id']} />
-                                <TextField variant='outlined' type="" value={cgObj.skills[skill['id']] || ''} onChange={(e) => { changeObjValue('skills', skill['id'], e.target.value) }}></TextField>
+                                <TextField variant='outlined' type="" value={cgObj.skills[skill['id']] || ''} onChange={(e) => { changeObjValue('skills', skill['id'], parseInt(e.target.value) > 5 ? 5 : parseInt(e.target.value)) }}></TextField>
                             </Grid>
                         )
                     })
