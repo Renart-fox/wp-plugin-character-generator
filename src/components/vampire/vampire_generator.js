@@ -2,9 +2,9 @@ const { Component, render } = wp.element;
 
 import { useState, useEffect } from 'react';
 
-import { Attributes, Skills } from './vampire_enum';
+import { Attributes, Skills, Disciplines, Clans } from './vampire_enum';
 
-import { Grid, TextField, MenuItem, Button } from '@mui/material';
+import { Grid, TextField, MenuItem, Button, Checkbox } from '@mui/material';
 import CgCheckbox from '../checkbox/cg_checkbox';
 import * as cgUtils from './generator_tools'
 import axios from 'axios';
@@ -16,8 +16,9 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
 
     const [cgObj, setCgObj] = React.useState({
         'type': 1,
+        'goule': false,
         'predation': "",
-        'clan': "",
+        'clan': 0,
         'sire': "",
         'generation': "",
         'difficulty': 0,
@@ -62,10 +63,9 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
             25: "0",
             26: "0",
         },
-        'specs': []
+        'specs': [],
+        'disciplines': []
     })
-
-    const [specsToRender, setSpecsToRender] = React.useState([]);
 
     const [setup, setSetup] = React.useState(false);
 
@@ -155,7 +155,6 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
 
                 if (associatedCheckboxChecked == false) {
                     let name = `cg_vampire_${simpleName}`;
-
                     let res = await cgUtils.executeFunctionByName(name, cgUtils, cgObj.type, cgObj.difficulty);
                     newCgObj[simpleName] = res;
                 }
@@ -196,6 +195,16 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
         setCgObj({ ...newCgObj })
     }
 
+    const changeDiscDiscValue = (ind, value) => {
+        let newCgObj = { ...cgObj };
+        newCgObj.disciplines[ind]['id'] = value;
+        setCgObj({ ...newCgObj })
+    }
+
+    const gouleChecked = (value) => {
+        setCgObj({ ...cgObj, goule: value });
+    }
+
     return (
         setup == true && <>
             <TextField
@@ -229,6 +238,8 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                                 </MenuItem>
                             ))}
                         </TextField>
+                        <br />
+                        <CgCheckbox name='goule' label='Créer une goule' onChecked={gouleChecked} defaultChecked={cgObj.goule} />
                     </Grid>
                 }
                 {
@@ -261,7 +272,20 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                         <Grid item xs={4}>
                             <h3>Clan</h3>
                             <CgCheckbox name="clan" />
-                            <TextField variant='outlined' id="cg_field_clan" type="" value={cgObj.clan || ''} onChange={(e) => setCgObj({ ...cgObj, clan: e.target.value })}></TextField>
+                            <TextField
+                                id="cg_field_clan"
+                                select
+                                label="Clan"
+                                value={cgObj.clan}
+                                onChange={(e) => { setCgObj({ ...cgObj, clan: e.target.value }); }}
+                                sx={{ minWidth: '30ch' }}
+                            >
+                                {Clans.map((clan) => (
+                                    <MenuItem key={clan.id} value={clan.id}>
+                                        {clan.name}
+                                    </MenuItem>
+                                ))}
+                            </TextField>
                         </Grid>
                         <Grid item xs={4}>
                             <h3>Sire</h3>
@@ -339,6 +363,41 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                         Ajouter une spécialisation
                     </Button>
                 </Grid>
+                {
+                    (cgObj.type == 1 || cgObj.goule) && <>
+                        <div hidden id='cg_field_disciplines' />
+                        <Grid item xs={12}><Divider /></Grid>
+                        <Grid item xs={12}><h1>Disciplines</h1></Grid>
+                        {
+                            cgObj.disciplines.map((disc, ind) => (
+                                <Grid item xs={4}>
+                                    <TextField
+                                        select
+                                        label="Discipline"
+                                        value={disc['id'] || ''}
+                                        onChange={(e) => { changeDiscDiscValue(ind, e.target.value) }}
+                                        sx={{ minWidth: '35ch' }}
+                                    >
+                                        {Disciplines.map((disc) => (
+                                            <MenuItem key={disc['name']} value={disc['id']}>
+                                                {disc['name']}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </Grid>
+                            ))
+                        }
+                        <Grid item xs={12}>
+                            <Button variant='outlined' id='create_disc' onClick={() => {
+                                let newDisc = [...cgObj.disciplines];
+                                newDisc.push({ id: 0, "name": "", "level": 0, "powers": [] });
+                                setCgObj({ ...cgObj, disciplines: newDisc });
+                            }}>
+                                Ajouter une discipline
+                            </Button>
+                        </Grid>
+                    </>
+                }
             </Grid >
         </>
     )

@@ -1,22 +1,67 @@
-export const Clan = {
-    0: 'Assamite',
-    1: 'Brujah',
-    2: 'Cappadocian',
-    3: 'Setite',
-    4: 'Gangrel',
-    5: 'Giovanni',
-    6: 'Lasombra',
-    7: 'Malkavian',
-    8: 'Nosferatu',
-    9: 'Ravnos',
-    10: 'Salubrien',
-    11: 'Toreador',
-    12: 'Tremere',
-    13: 'Tzimisce',
-    14: 'Ventrue'
-}
+export const Clans = [
+    {
+        "id": 0,
+        "name": "Assamite"
+    },
+    {
+        "id": 1,
+        "name": "Brujah"
+    },
+    {
+        "id": 2,
+        "name": "Cappadocian"
+    },
+    {
+        "id": 3,
+        "name": "Setite"
+    },
+    {
+        "id": 4,
+        "name": "Gangrel"
+    },
+    {
+        "id": 5,
+        "name": "Giovanni"
+    },
+    {
+        "id": 6,
+        "name": "Lasombra"
+    },
+    {
+        "id": 7,
+        "name": "Malkavian"
+    },
+    {
+        "id": 8,
+        "name": "Nosferatu"
+    },
+    {
+        "id": 9,
+        "name": "Ravnos"
+    },
+    {
+        "id": 10,
+        "name": "Salubrien"
+    },
+    {
+        "id": 11,
+        "name": "Toreador"
+    },
+    {
+        "id": 12,
+        "name": "Tremere"
+    },
+    {
+        "id": 13,
+        "name": "Tzimisce"
+    },
+    {
+        "id": 14,
+        "name": "Ventrue"
+    }
+]
 
-export const Predation = {
+export const Predations = {
     0: 'Biberonneur',
     1: 'Chat de gouttière',
     2: 'Consensualiste',
@@ -208,4 +253,69 @@ export const Specializations = {
     24: ["Désert", "Chasse", "Jungle", "Pistage", "Pièges", "Abris", "Exploration urbaine", "Forêt"],
     25: ["Bluff", "Apparence humaine", "Mensonges en béton", "Innocence", "Arnaque", "Séduction"],
     26: ["Embuscades", "Camouflage", "Objets cachées", "Ouïe", "Intuition", "Odorat", "Vue", "Pièges", "Milieu sauvage"],
+}
+
+export const Disciplines = [
+    {
+        id: 0,
+        name: 'Animalisme'
+    },
+    {
+        id: 1,
+        name: 'Auspex'
+    },
+    {
+        id: 2,
+        name: 'Célérité'
+    },
+    {
+        id: 3,
+        name: 'Domination'
+    },
+    {
+        id: 4,
+        name: 'Force d\'âme'
+    },
+    {
+        id: 5,
+        name: 'Obténébration'
+    },
+    {
+        id: 6,
+        name: 'Occultation'
+    },
+    {
+        id: 7,
+        name: 'Présence'
+    },
+    {
+        id: 8,
+        name: 'Protéisme'
+    },
+    {
+        id: 9,
+        name: 'Puissance'
+    },
+    {
+        id: 10,
+        name: 'Sorcellerie du Sang'
+    },
+]
+
+export const ClansDisciplines = {
+    0: [10, 2, 6],
+    1: [2, 9, 7],
+    2: [1, 4, 5],
+    3: [6, 7, 8],
+    4: [0, 4, 8],
+    5: [1, 4, 5],
+    6: [3, 5, 9],
+    7: [1, 6, 3],
+    8: [0, 6, 9],
+    9: [0, 6, 7],
+    10: [1, 3, 4],
+    11: [1, 2, 7],
+    12: [1, 3, 10],
+    13: [0, 3, 8],
+    14: [3, 4, 7],
 }

@@ -1,4 +1,4 @@
-import { Clan, Predation, Skills, Specializations } from './vampire_enum';
+import { Clans, Predations, Skills, Specializations } from './vampire_enum';
 import axios from 'axios';
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
@@ -12,12 +12,15 @@ export async function executeFunctionByName(functionName, context /*, args */) {
     return await context[func].apply(context, args);
 }
 
-export async function cg_vampire_clan() {
-    return await Clan[Math.floor(Math.random() * Object.keys(Clan).length)]
+export async function cg_vampire_clan(...args) {
+    var newCgObj = args[3];
+    var generatedValue = String(Clans[Math.floor(Math.random() * Object.keys(Clans).length)]['id']);
+    newCgObj.clan = generatedValue;
+    return await newCgObj;
 }
 
 export async function cg_vampire_predation() {
-    return await Predation[Math.floor(Math.random() * Object.keys(Predation).length)]
+    return await Predations[Math.floor(Math.random() * Object.keys(Predations).length)]
 }
 
 export async function cg_vampire_generation(...args) {
@@ -258,6 +261,17 @@ export async function cg_vampire_skills(...args) {
     }
 
     cgObj['specs'] = newSpecs;
+
+    console.log(cgObj);
+
+    return await cgObj;
+}
+
+export async function cg_vampire_disciplines(...args) {
+    let difficulty = args[1];
+    let lockedDisciplines = args[2];
+    let cgObj = args[3];
+
 
     return await cgObj;
 }

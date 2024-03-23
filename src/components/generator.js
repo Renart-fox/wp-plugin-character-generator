@@ -14,7 +14,7 @@ import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 import Alert from '@mui/material/Alert';
 import axios from 'axios';
-import { Grid } from '@mui/material';
+import { Divider, Grid } from '@mui/material';
 
 const queryClient = new QueryClient();
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
@@ -59,7 +59,7 @@ const Generator = () => {
     const { vertical, horizontal, open } = snackState;
 
     const updateCgObj = (cgObj) => {
-        //console.log(cgObj)
+        console.log(cgObj)
         setCharacterState({ ...characterState, cg_obj: cgObj })
     }
 
@@ -143,6 +143,13 @@ const Generator = () => {
         !isLoading && <>
             <Grid container spacing={0} sx={{ m: 2 }}>
                 <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={() => generateCharacter()} sx={{ mr: '1rem' }}>Lancer les dés !</Button>
+                </Grid>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={() => { mutation.mutate() }}>Sauvegarder le personnage</Button>
+                </Grid>
+                <Grid item xs={12} sx={{ m: 2 }}><Divider /></Grid>
+                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <CgCheckbox name="characterName" />
                     <TextField id="cg-data-characterName" label="Nom du personnage" variant="standard" type="" defaultValue={characterState.name} value={characterState.name} onChange={(e) => { setCharacterState({ ...characterState, name: e.target.value }) }} sx={{ minWidth: '50ch' }} />
                 </Grid>
@@ -171,6 +178,7 @@ const Generator = () => {
                         }
                     </div>
                 </Grid>
+                <Grid item xs={12} sx={{ m: 2 }}><Divider /></Grid>
                 <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button variant="contained" onClick={() => generateCharacter()} sx={{ mr: '1rem' }}>Lancer les dés !</Button>
                 </Grid>
