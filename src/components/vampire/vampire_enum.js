@@ -319,3 +319,220 @@ export const ClansDisciplines = {
     13: [0, 3, 8],
     14: [3, 4, 7],
 }
+
+export const Powers = {
+    0: {
+        1: ["Lier le famulus", "Sentir la Bête"],
+        2: ["Murmures Sauvages"],
+        3: ["Dompter la Bête", "Festin Animal"],
+        4: ["Soumission de l'Esprit"],
+        5: ["Hégémonie animale", "Lâcher la Bête"],
+        "amalgames": [{
+            "level": 1,
+            "disc": 4,
+            "power_level": 2,
+            "name": "Bêtes Endurantes"
+        },
+        {
+            "level": 2,
+            "disc": 8,
+            "power_level": 5,
+            "name": "Union de la Terre"
+        }],
+        "prerequisites": []
+    },
+    1: {
+        1: ["Sens Accru", "Sentir l'Invisible"],
+        2: ["Prémonition"],
+        3: ["Lecture de l'Âme", "Partage des Sens"],
+        4: ["Psychométrie"],
+        5: ["Clarivoyance", "Télépathie"],
+        "amalgames": [{
+            "level": 1,
+            "disc": 4,
+            "power_level": 2,
+            "name": "Valeren"
+        },
+        {
+            "level": 2,
+            "disc": 5,
+            "power_level": 2,
+            "name": "Prémonition Mortelle"
+        },
+        {
+            "level": 3,
+            "disc": 6,
+            "power_level": 4,
+            "name": "Dissimulation"
+        }],
+        "prerequisites": []
+    },
+    2: {
+        1: ["Grâce Féline", "Réflexes Éclairs"],
+        2: ["Rapidité"],
+        3: ["Fulgurance", "Traversée"],
+        4: ["Breuvage d'Élégance", "Tir Infaillible"],
+        5: ["Fraction de Seconde", "Frappe Éclair"],
+        "amalgames": [],
+        "prerequisites": []
+    },
+    3: {
+        1: ["Brouillage Mémoriel", "Contrainte"],
+        2: ["Faveur du Dominator", "Hypnose"],
+        3: ["Altération Mémorielle"],
+        4: ["Rationalisation"],
+        5: ["Décret Ultime", "Manipulation des Masses"],
+        'amalgames': [{
+            "level": 3,
+            "disc": 1,
+            "power_level": 5,
+            "name": "Soulager l'Âme Bestiale"
+        },
+        {
+            "level": 3,
+            "disc": 1,
+            "power_level": 5,
+            "name": "Possession"
+        },
+        {
+            "level": 1,
+            "disc": 7,
+            "power_level": 4,
+            "name": "Voix Impérieuse"
+        },
+        {
+            "level": 2,
+            "disc": 8,
+            "power_level": 2,
+            "name": "Vicissitude"
+        }
+        ],
+        "prerequisites": [
+            {
+                "need": "Hypnose",
+                "power_level": 3,
+                "name": "Injonction Latente"
+            }
+        ]
+    },
+    4: {
+        1: ["Résilience", "Espit Résolu"],
+        2: ["Résistance"],
+        3: ["Défier les Fléaux", "Fortifier le Masque Intérieur"],
+        4: ["Breuvage d'Endurance"],
+        5: ["Chair de Marbre", "Douleur Salvatrice"],
+        'amalgames': [{
+            "level": 1,
+            "disc": 1,
+            "power_level": 2,
+            "name": "Obéah"
+        },
+        {
+            "level": 2,
+            "disc": 5,
+            "power_level": 3,
+            "name": "Festin des Passions"
+        }],
+        "prerequisites": []
+    },
+    5: {
+        1: ["Ancre Liante", "Des Cendres aux Cendres", "Jeu d'Ombres", "Vision Abyssale"],
+        2: ["Invocation des ombres", "Où le Linceul s'Amincit"],
+        3: ["Aura de Putréfaction", "Sombre Vision", "Toucher des Abysses"],
+        4: ["Linceul Stygien", "Peste Nécrotique"],
+        5: ["Avatar Ténébreux", "Chemin des Abysses", "Esprit Flétri", "Skuld Accomplie"],
+        'amalgames': []
+    },
+    6: {
+        1: ["Manteau d'Ombre", "Silence de la Mort"],
+        2: ["Passage Invisible"],
+        3: ["Masque aux Mille Visages", "Fantôme dans la Machine"],
+        4: ["Disparition"],
+        5: ["Imposture", "Masquer l'Assemblée"],
+        'amalgames': [{
+            "level": 2,
+            "disc": 0,
+            "power_level": 3,
+            "name": "Essaim Serviteur"
+        },
+        {
+            "level": 2,
+            "disc": 3,
+            "power_level": 2,
+            "name": "Aliénation"
+        }],
+        "prerequisites": []
+    },
+    7: {
+        1: ["Intimider", "Révérence"],
+        2: ["Baiser Persistant"],
+        3: ["Envoûtement", "Regard Terrifiant"],
+        4: ["Convocation"],
+        5: ["Magnétisme Médiatique", "Majesté"],
+        "amalgames": [{
+            "level": 1,
+            "disc": 6,
+            "power_level": 2,
+            "name": "Chimérie"
+        },
+        {
+            "level": 2,
+            "disc": 6,
+            "power_level": 3,
+            "name": "Fata Morgana"
+        },
+        {
+            "level": 3,
+            "disc": 9,
+            "power_level": 3,
+            "name": "Étincelle de Rage"
+        }],
+        "prerequisites": []
+    },
+    8: {
+        1: ["Poids Plume", "Yeux de la Bête"],
+        2: ["Armes Bestiales"],
+        3: ["Change-Forme", "Fusion avec la Terre"],
+        4: ["Métamorphose"],
+        5: ["Forme de Brume", "Coeur sans Entrave"],
+        "amalgames": [],
+        "prerequisites": [{
+            "need": "Vicissitude",
+            "power_level": 3,
+            "name": "Sculpture de la Chair"
+        },
+        {
+            "need": "Vicissitude",
+            "power_level": 4,
+            "name": "Forme Monstrueuse"
+        },
+        {
+            "need": "Fusion avec la Terre",
+            "power_level": 5,
+            "name": "Union de la Terre"
+        }]
+    },
+    9: {
+        1: ["Bond Surhumain", "Corps Léthal"],
+        2: ["Prouesse"],
+        3: ["Ingurgitation Brutale", "Poigne Incroyable"],
+        4: ["Breuvage de Puissance"],
+        5: ["Frappe Télurique", "Poing de Caïn"],
+        "amalgames": [{
+            "level": 2,
+            "disc": 5,
+            "power_level": 2,
+            "name": "Les Bras d'Arhiman"
+        }],
+        "prerequisites": []
+    },
+    10: {
+        1: ["Goût du Sang", "Vitae Corrosive"],
+        2: ["Éteindre la vitae"],
+        3: ["Maturation du Sang", "Toucher du Scorpion"],
+        4: ["Vol de Vitae"],
+        5: ["Caresse de Baal", "Chaudron de Sang"],
+        "amalgames": [],
+        "prerequisites": []
+    }
+}

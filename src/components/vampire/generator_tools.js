@@ -13,9 +13,12 @@ export async function executeFunctionByName(functionName, context /*, args */) {
 }
 
 export async function cg_vampire_clan(...args) {
+    var locked = args[2];
     var newCgObj = args[3];
-    var generatedValue = String(Clans[Math.floor(Math.random() * Object.keys(Clans).length)]['id']);
-    newCgObj.clan = generatedValue;
+    if (locked.length == 0) {
+        var generatedValue = Clans[Math.floor(Math.random() * Object.keys(Clans).length)]['id'];
+        newCgObj.clan = generatedValue;
+    }
     return await newCgObj;
 }
 

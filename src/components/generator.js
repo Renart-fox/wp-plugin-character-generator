@@ -114,7 +114,7 @@ const Generator = () => {
                 }
             })
         },
-        onError: () => { setSnackState({ ...snackState, open: true, message: 'Erreur dans l\'enregistrement du personnage. Contactez Miel', alert: 'error' }) },
+        onError: (e) => { setSnackState({ ...snackState, open: true, message: `Erreur dans l\'enregistrement du personnage : ${e}`, alert: 'error' }) },
         onSuccess: () => { setSnackState({ ...snackState, open: true, message: 'Le personnage a bien été sauvegardé', alert: 'success' }) }
     })
 
@@ -134,7 +134,7 @@ const Generator = () => {
             case "2":
                 return <h1>Cyberpunk RED</h1>
             case "3":
-                return <VampireGenerator signal={signal} update={updateCgObj} startingCgObj={characterState.cg_obj} />
+                return <VampireGenerator signal={signal} update={updateCgObj} startingCgObj={characterState.cg_obj} disableSystemChoice={setSystemSelectDisabled} />
         }
 
     };
