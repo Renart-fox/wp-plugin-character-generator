@@ -30,6 +30,156 @@ export const Predation = {
     10: 'Extortion'
 }
 
+export const Attributes = {
+    'strength': 'Force',
+    'charisma': 'Charisme',
+    'intelligence': 'Intelligence',
+    'dexterity': 'Dextérité',
+    'manipulation': 'Manipulation',
+    'cunning': 'Astuce',
+    'stamina': 'Vigueur',
+    'composure': 'Sang-Froid',
+    'resolve': 'Résolution'
+}
+
+export const Skills = [
+    {
+        "id": 0,
+        "name": "gun",
+        "fullname": "Armes à feu"
+    },
+    {
+        "id": 1,
+        "name": "animals",
+        "fullname": "Animaux"
+    },
+    {
+        "id": 2,
+        "name": "erudition",
+        "fullname": "Érudition"
+    },
+    {
+        "id": 3,
+        "name": "craft",
+        "fullname": "Artisanat"
+    },
+    {
+        "id": 4,
+        "name": "command",
+        "fullname": "Commandement"
+    },
+    {
+        "id": 5,
+        "name": "finance",
+        "fullname": "Finances"
+    },
+    {
+        "id": 6,
+        "name": "athletism",
+        "fullname": "Athlétisme"
+    },
+    {
+        "id": 7,
+        "name": "empathy",
+        "fullname": "Empathie"
+    },
+    {
+        "id": 8,
+        "name": "investigation",
+        "fullname": "Investigation"
+    },
+    {
+        "id": 9,
+        "name": "brawl",
+        "fullname": "Bagarre"
+    },
+    {
+        "id": 10,
+        "name": "etiquette",
+        "fullname": "Étiquette"
+    },
+    {
+        "id": 11,
+        "name": "medicine",
+        "fullname": "Médecine"
+    },
+    {
+        "id": 12,
+        "name": "drive",
+        "fullname": "Conduite"
+    },
+    {
+        "id": 13,
+        "name": "night",
+        "fullname": "Éxpérience de la rue"
+    },
+    {
+        "id": 14,
+        "name": "occult",
+        "fullname": "Occultisme"
+    },
+    {
+        "id": 15,
+        "name": "stealth",
+        "fullname": "Furtivité"
+    },
+    {
+        "id": 16,
+        "name": "intimidation",
+        "fullname": "Intimidation"
+    },
+    {
+        "id": 17,
+        "name": "politic",
+        "fullname": "Politique"
+    },
+    {
+        "id": 18,
+        "name": "sleight",
+        "fullname": "Larcin"
+    },
+    {
+        "id": 19,
+        "name": "representation",
+        "fullname": "Performance"
+    },
+    {
+        "id": 20,
+        "name": "science",
+        "fullname": "Sciences"
+    },
+    {
+        "id": 21,
+        "name": "melee",
+        "fullname": "Mêlée"
+    },
+    {
+        "id": 22,
+        "name": "persuasion",
+        "fullname": "Persuasion"
+    },
+    {
+        "id": 23,
+        "name": "tech",
+        "fullname": "Technologies"
+    },
+    {
+        "id": 24,
+        "name": "survival",
+        "fullname": "Survie"
+    },
+    {
+        "id": 25,
+        "name": "subterfuge",
+        "fullname": "Subterfuge"
+    },
+    {
+        "id": 26,
+        "name": "vigilance",
+        "fullname": "Vigilance"
+    }
+]
+
 export const Specializations = {
     'gun': ["Arbalètes", "Vente", "Fabrication", "Chargement manuel de munitions", "Dégainage rapide", "Snipers", "Tirs acrobatiques"],
     'animals': ["Entraînement à l'attaque", "Chats", "Chiens", "Fauconnerie", "Chevaux", "Apaisement", "Rats", "Serpents", "Entraînement aux tours", "Loups"],

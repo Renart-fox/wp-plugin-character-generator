@@ -2,7 +2,7 @@ const { Component, render } = wp.element;
 
 import { useState, useEffect } from 'react';
 
-import { Clan, Predation } from './vampire_enum';
+import { Attributes, Skills } from './vampire_enum';
 
 import { Grid, TextField, MenuItem } from '@mui/material';
 import CgCheckbox from '../checkbox/cg_checkbox';
@@ -33,34 +33,34 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
             'cunning': 0,
             'resolve': 0
         },
-        'comps': {
-            'gun': "0",
-            'animals': "0",
-            'erudition': "0",
-            'craft': "0",
-            'command': "0",
-            'finance': "0",
-            'athletism': "0",
-            'empathy': "0",
-            'investigation': "0",
-            'brawl': "0",
-            'etiquette': "0",
-            'medicine': "0",
-            'drive': "0",
-            'night': "0",
-            'occult': "0",
-            'stealth': "0",
-            'intimidation': "0",
-            'politic': "0",
-            'sleight': "0",
-            'representation': "0",
-            'science': "0",
-            'melee': "0",
-            'persuasion': "0",
-            'tech': "0",
-            'survival': "0",
-            'subterfuge': "0",
-            'vigilance': "0",
+        'skills': {
+            0: "0",
+            1: "0",
+            2: "0",
+            3: "0",
+            4: "0",
+            5: "0",
+            6: "0",
+            7: "0",
+            8: "0",
+            9: "0",
+            10: "0",
+            11: "0",
+            12: "0",
+            13: "0",
+            14: "0",
+            15: "0",
+            16: "0",
+            17: "0",
+            18: "0",
+            19: "0",
+            20: "0",
+            21: "0",
+            22: "0",
+            23: "0",
+            24: "0",
+            25: "0",
+            26: "0",
         },
         'specs': []
     })
@@ -118,49 +118,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
         }
     ]
 
-    const attributes = {
-        'strength': 'Force',
-        'charisma': 'Charisme',
-        'intelligence': 'Intelligence',
-        'dexterity': 'Dextérité',
-        'manipulation': 'Manipulation',
-        'cunning': 'Astuce',
-        'stamina': 'Vigueur',
-        'composure': 'Sang-Froid',
-        'resolve': 'Résolution'
-    }
-
-    const comps = {
-        'gun': 'Armes à feu',
-        'animals': 'Animaux',
-        'erudition': 'Érudition',
-        'craft': 'Artisanat',
-        'command': 'Commandement',
-        'finance': 'Finances',
-        'athletism': 'Athlétisme',
-        'empathy': 'Empathie',
-        'investigation': 'Investigation',
-        'brawl': 'Bagarre',
-        'etiquette': 'Étiquette',
-        'medicine': 'Médecine',
-        'drive': 'Conduite',
-        'night': 'Éxpérience de la rue',
-        'occult': 'Occultisme',
-        'stealth': 'Furtivité',
-        'intimidation': 'Intimidation',
-        'politic': 'Politique',
-        'sleight': 'Larcin',
-        'representation': 'Performance',
-        'science': 'Sciences',
-        'melee': 'Mêlée',
-        'persuasion': 'Persuasion',
-        'tech': 'Technologies',
-        'survival': 'Survie',
-        'subterfuge': 'Subterfuge',
-        'vigilance': 'Vigilance',
-    };
-
-    const compsLabels = Object.values(comps);
+    //const compsLabels = Object.values(comps);
 
     const getRandomName = async () => {
         const response = await axios.get(prefix + '/cg/v1/RandomName?system=3');
@@ -275,10 +233,10 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                     <div hidden id='cg_field_attributes' />
                     <Grid item xs={12}><h1>Attributs</h1></Grid>
                     {
-                        Object.keys(attributes).map((attr) => {
+                        Object.keys(Attributes).map((attr) => {
                             return (
                                 <Grid item xs={4}>
-                                    <h3>{attributes[attr]}</h3>
+                                    <h3>{Attributes[attr]}</h3>
                                     <CgCheckbox name={"attributes_" + attr} />
                                     <TextField variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
                                 </Grid>
@@ -286,15 +244,15 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                         })
                     }
                     <Grid item xs={12}><Divider /></Grid>
-                    <div hidden id='cg_field_comps' />
+                    <div hidden id='cg_field_skills' />
                     <Grid item xs={12}><h1>Compétences</h1></Grid>
                     {
-                        Object.keys(comps).map((comp) => {
+                        Skills.map((skill) => {
                             return (
                                 <Grid item xs={4}>
-                                    <h3>{comps[comp]}</h3>
-                                    <CgCheckbox name={"comps_" + comp} />
-                                    <TextField variant='outlined' type="" value={cgObj.comps[comp] || ''} onChange={(e) => { changeObjValue('comps', comp, e.target.value) }}></TextField>
+                                    <h3>{skill['fullname']}</h3>
+                                    <CgCheckbox name={"skills_" + skill['name']} />
+                                    <TextField variant='outlined' type="" value={cgObj.skills[skill['id']] || ''} onChange={(e) => { changeObjValue('skills', skill['id'], e.target.value) }}></TextField>
                                 </Grid>
                             )
                         })
@@ -302,7 +260,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                     <Grid item xs={12}><Divider /></Grid>
                     <Grid item xs={12}><h1>Spécialisations</h1></Grid>
                     {
-                        cgObj.specs.map((spec, ind) => {
+                        /*cgObj.specs.map((spec, ind) => {
                             let compsCopy = { ...comps };
                             return (
                                 <Grid item xs={6}>
@@ -322,7 +280,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                                     <TextField label="Spécialisation" variant='outlined' type="" value={spec["Spec"] || ''} onChange={(e) => { changeSpecSpecValue(ind, e.target.value) }}></TextField>
                                 </Grid>
                             )
-                        })
+                        })*/
                     }
                 </Grid>
 
@@ -376,10 +334,10 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                     <div hidden id='cg_field_attributes' />
                     <Grid item xs={12}><h1>Attributs</h1></Grid>
                     {
-                        Object.keys(attributes).map((attr) => {
+                        Object.keys(Attributes).map((attr) => {
                             return (
                                 <Grid item xs={4}>
-                                    <h3>{attributes[attr]}</h3>
+                                    <h3>{Attributes[attr]}</h3>
                                     <CgCheckbox name={"attributes_" + attr} />
                                     <TextField variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
                                 </Grid>
@@ -387,15 +345,15 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                         })
                     }
                     <Grid item xs={12}><Divider /></Grid>
-                    <div hidden id='cg_field_comps' />
+                    <div hidden id='cg_field_skills' />
                     <Grid item xs={12}><h1>Compétences</h1></Grid>
                     {
-                        Object.keys(comps).map((comp) => {
+                        Skills.map((skill) => {
                             return (
                                 <Grid item xs={4}>
-                                    <h3>{comps[comp]}</h3>
-                                    <CgCheckbox name={"comps_" + comp} />
-                                    <TextField variant='outlined' type="" value={cgObj.comps[comp] || ''} onChange={(e) => { changeObjValue('comps', comp, e.target.value) }}></TextField>
+                                    <h3>{skill['fullname']}</h3>
+                                    <CgCheckbox name={"skills_" + skill['name']} />
+                                    <TextField variant='outlined' type="" value={cgObj.skills[skill['id']] || ''} onChange={(e) => { changeObjValue('skills', skill['id'], e.target.value) }}></TextField>
                                 </Grid>
                             )
                         })
@@ -403,7 +361,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                     <Grid item xs={12}><Divider /></Grid>
                     <Grid item xs={12}><h1>Spécialisations</h1></Grid>
                     {
-                        cgObj.specs.map((spec, ind) => {
+                        /*cgObj.specs.map((spec, ind) => {
                             let compsCopy = comps;
                             return (
                                 <Grid item xs={6}>
@@ -423,7 +381,7 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                                     <TextField label="Spécialisation" variant='outlined' type="" value={spec["Spec"] || ''} onChange={(e) => { changeSpecSpecValue(ind, e.target.value) }}></TextField>
                                 </Grid>
                             )
-                        })
+                        })*/
                     }
                 </Grid >
             }

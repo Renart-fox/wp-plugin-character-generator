@@ -1,4 +1,4 @@
-import { Clan, Predation, Specializations } from './vampire_enum';
+import { Clan, Predation, Skills, Specializations } from './vampire_enum';
 import axios from 'axios';
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
@@ -139,143 +139,120 @@ export async function cg_vampire_attributes(...args) {
     return await newCgObj;
 }
 
-export async function cg_vampire_comps(...args) {
+export async function cg_vampire_skills(...args) {
     let difficulty = args[1];
-    let lockedComps = args[2];
+    let lockedSkills = args[2];
     let cgObj = args[3];
-    let newComps = cgObj['comps']
-    let compList = [
-        'gun',
-        'animals',
-        'erudition',
-        'craft',
-        'command',
-        'finance',
-        'athletism',
-        'empathy',
-        'investigation',
-        'brawl',
-        'etiquette',
-        'medicine',
-        'drive',
-        'night',
-        'occult',
-        'stealth',
-        'intimidation',
-        'politic',
-        'sleight',
-        'representation',
-        'science',
-        'melee',
-        'persuasion',
-        'tech',
-        'survival',
-        'subterfuge',
-        'vigilance',
-    ];
+    let newSkills = cgObj['skills']
+    let skillList = Skills.map(a => a.id);
     let points = [];
-    let maxComps = 0;
+    let maxSkills = 0;
     let specs = 0;
 
     switch (difficulty) {
         case 0:
-            maxComps = 8;
+            maxSkills = 8;
             specs = 0;
             points = ["2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 1:
-            maxComps = 12;
+            maxSkills = 12;
             specs = 0;
             points = ["3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 2:
-            maxComps = 14;
+            maxSkills = 14;
             specs = 1;
             points = ["4", "4", "3", "3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1"];
             break;
         case 3:
-            maxComps = 15;
+            maxSkills = 15;
             specs = 3;
             points = ["5", "4", "4", "4", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2"];
             break;
         case 4:
-            maxComps = 14;
+            maxSkills = 14;
             specs = 1;
             points = ["4", "4", "3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 5:
-            maxComps = 15;
+            maxSkills = 15;
             specs = 3;
             points = ["5", "4", "4", "4", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2"];
             break;
         case 6:
-            maxComps = 22;
+            maxSkills = 22;
             specs = 5;
             points = ["5", "5", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2", "2", "2"];
             break;
         case 7:
-            maxComps = 27;
+            maxSkills = 27;
             specs = 8;
             points = ["5", "5", "5", "5", "4", "4", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2"];
             break;
     }
 
-    maxComps -= lockedComps.length;
+    maxSkills -= lockedSkills.length;
 
-    for (var lockedComp of lockedComps) {
-        if (compList.includes(lockedComp)) {
-            let index = compList.indexOf(lockedComp);
-            compList.splice(index, 1);
+    // Removes all locked skills from generation
+    for (var lockedSkill of lockedSkills) {
+        if (skillList.includes(lockedSkill)) {
+            let index = skillList.indexOf(lockedSkill);
+            skillList.splice(index, 1);
         }
     }
 
-    for (var lockedComp of lockedComps) {
-        let value = newComps[lockedComp];
+    // Remove all locked and attributed points from generation 
+    for (var lockedSkill of lockedSkills) {
+        let value = newSkills[lockedSkill];
         let index = points.indexOf(value)
         if (index != -1)
             points.splice(index, 1);
     }
 
-    for (var i = 0; i < maxComps; i++) {
-        let compToTarget = compList[Math.floor(Math.random() * compList.length)];
+    // Randomly attributes all skills
+    for (var i = 0; i < maxSkills; i++) {
+        let skillToTarget = skillList[Math.floor(Math.random() * skillList.length)];
         let pointToAttribute = points[Math.floor(Math.random() * points.length)];
-        newComps[compToTarget] = pointToAttribute;
+        newSkills[skillToTarget] = pointToAttribute;
         // Remove from lists
-        let compIndex = compList.indexOf(compToTarget);
-        compList.splice(compIndex, 1);
+        let compIndex = skillList.indexOf(skillToTarget);
+        skillList.splice(compIndex, 1);
         let pointIndex = points.indexOf(pointToAttribute);
         points.splice(pointIndex, 1);
     }
 
-    cgObj["comps"] = newComps;
+    cgObj["skills"] = newSkills;
 
-    let specsAvailableForComp = []
-    for (var comp of Object.keys(newComps)) {
-        if (parseInt(newComps[comp]) > 0)
-            specsAvailableForComp.push(comp)
+    /*
+    let specsAvailableForSkill = []
+    for (var skill of Object.keys(newSkills)) {
+        if (parseInt(newSkills[skill]) > 0)
+            specsAvailableForSkill.push(skill)
     }
 
     var specializationsCopy = JSON.parse(
         JSON.stringify(Specializations),
     );
-    console.log(specsAvailableForComp);
+    console.log(specsAvailableForSkill);
     var newSpecs = [];
 
     for (var i = 0; i < specs; i++) {
-        var comp = specsAvailableForComp[Math.floor(Math.random() * specsAvailableForComp.length)];
-        var spec = specializationsCopy[comp][Math.floor(Math.random() * specializationsCopy[comp].length)];
+        var skill = specsAvailableForSkill[Math.floor(Math.random() * specsAvailableForSkill.length)];
+        var spec = specializationsCopy[skill][Math.floor(Math.random() * specializationsCopy[skill].length)];
         newSpecs.push({
-            'Comp': comp,
+            'Comp': skill,
             "Spec": spec
         });
 
-        var indexComp = specsAvailableForComp.indexOf(comp);
-        specsAvailableForComp.splice(indexComp, 1);
-        var indexSpec = specializationsCopy[comp].indexOf(spec);
-        specializationsCopy[comp].splice(indexSpec, 1);
+        var indexComp = specsAvailableForSkill.indexOf(skill);
+        specsAvailableForSkill.splice(indexComp, 1);
+        var indexSpec = specializationsCopy[skill].indexOf(spec);
+        specializationsCopy[skill].splice(indexSpec, 1);
     }
 
     cgObj['specs'] = newSpecs;
+    */
 
     return await cgObj;
 }
