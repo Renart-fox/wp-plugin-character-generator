@@ -8,6 +8,7 @@ import { Grid, TextField, MenuItem } from '@mui/material';
 import CgCheckbox from '../checkbox/cg_checkbox';
 import * as cgUtils from './generator_tools'
 import axios from 'axios';
+import Divider from '@mui/material/Divider';
 
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
@@ -119,13 +120,13 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
 
     const attributes = {
         'strength': 'Force',
-        'dexterity': 'Dextérité',
-        'stamina': 'Vigueur',
         'charisma': 'Charisme',
-        'manipulation': 'Manipulation',
-        'composure': 'Sang-Froid',
         'intelligence': 'Intelligence',
+        'dexterity': 'Dextérité',
+        'manipulation': 'Manipulation',
         'cunning': 'Astuce',
+        'stamina': 'Vigueur',
+        'composure': 'Sang-Froid',
         'resolve': 'Résolution'
     }
 
@@ -271,7 +272,60 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                             ))}
                         </TextField>
                     </Grid>
+                    <div hidden id='cg_field_attributes' />
+                    <Grid item xs={12}><h1>Attributs</h1></Grid>
+                    {
+                        Object.keys(attributes).map((attr) => {
+                            return (
+                                <Grid item xs={4}>
+                                    <h3>{attributes[attr]}</h3>
+                                    <CgCheckbox name={"attributes_" + attr} />
+                                    <TextField variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
+                                </Grid>
+                            )
+                        })
+                    }
+                    <Grid item xs={12}><Divider /></Grid>
+                    <div hidden id='cg_field_comps' />
+                    <Grid item xs={12}><h1>Compétences</h1></Grid>
+                    {
+                        Object.keys(comps).map((comp) => {
+                            return (
+                                <Grid item xs={4}>
+                                    <h3>{comps[comp]}</h3>
+                                    <CgCheckbox name={"comps_" + comp} />
+                                    <TextField variant='outlined' type="" value={cgObj.comps[comp] || ''} onChange={(e) => { changeObjValue('comps', comp, e.target.value) }}></TextField>
+                                </Grid>
+                            )
+                        })
+                    }
+                    <Grid item xs={12}><Divider /></Grid>
+                    <Grid item xs={12}><h1>Spécialisations</h1></Grid>
+                    {
+                        cgObj.specs.map((spec, ind) => {
+                            let compsCopy = { ...comps };
+                            return (
+                                <Grid item xs={6}>
+                                    <TextField
+                                        select
+                                        label="Compétences"
+                                        value={compsCopy[spec['Comp']] || ''}
+                                        onChange={(e) => { changeSpecCompValue(ind, e.target.value) }}
+                                        sx={{ minWidth: '50ch' }}
+                                    >
+                                        {compsLabels.map((comp) => (
+                                            <MenuItem key={comp} value={comp}>
+                                                {comp}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                    <TextField label="Spécialisation" variant='outlined' type="" value={spec["Spec"] || ''} onChange={(e) => { changeSpecSpecValue(ind, e.target.value) }}></TextField>
+                                </Grid>
+                            )
+                        })
+                    }
                 </Grid>
+
             }
             {
                 cgObj.type == 1 && <Grid id="generator" container spacing={2} sx={{ width: '100%' }}>
@@ -291,52 +345,63 @@ export default function VampireGenerator({ signal, update, startingCgObj }) {
                             ))}
                         </TextField>
                     </Grid>
-                    <Grid item xs={12}><h2>Concept</h2></Grid>
+                    <Grid item xs={12}><Divider /></Grid>
+                    <Grid item xs={12}><h1>Concept</h1></Grid>
                     <Grid item xs={4}>
+                        <h3>Style de prédation</h3>
                         <CgCheckbox name="predation" />
-                        <TextField label="Style de prédation" variant='outlined' id="cg_field_predation" type="" value={cgObj.predation || ''} onChange={(e) => setCgObj({ ...cgObj, predation: e.target.value })}></TextField>
+                        <TextField variant='outlined' id="cg_field_predation" type="" value={cgObj.predation || ''} onChange={(e) => setCgObj({ ...cgObj, predation: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xs={4}>
+                        <h3>Clan</h3>
                         <CgCheckbox name="clan" />
-                        <TextField label="Clan" variant='outlined' id="cg_field_clan" type="" value={cgObj.clan || ''} onChange={(e) => setCgObj({ ...cgObj, clan: e.target.value })}></TextField>
+                        <TextField variant='outlined' id="cg_field_clan" type="" value={cgObj.clan || ''} onChange={(e) => setCgObj({ ...cgObj, clan: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xs={4}>
+                        <h3>Sire</h3>
                         <CgCheckbox name="sire" />
-                        <TextField label="Sire" variant='outlined' id="cg_field_sire" type="" value={cgObj.sire || ''} onChange={(e) => setCgObj({ ...cgObj, sire: e.target.value })}></TextField>
+                        <TextField variant='outlined' id="cg_field_sire" type="" value={cgObj.sire || ''} onChange={(e) => setCgObj({ ...cgObj, sire: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xs={4}>
+                        <h3>Génération</h3>
                         <CgCheckbox name="generation" />
-                        <TextField label="Génération" variant='outlined' id="cg_field_generation" type="" value={cgObj.generation || ''} onChange={(e) => setCgObj({ ...cgObj, generation: e.target.value })}></TextField>
+                        <TextField variant='outlined' id="cg_field_generation" type="" value={cgObj.generation || ''} onChange={(e) => setCgObj({ ...cgObj, generation: e.target.value })}></TextField>
                     </Grid>
                     <Grid item xs={4}>
+                        <h3>Points de Sang</h3>
                         <CgCheckbox name="blood" />
-                        <TextField label="Points de Sang" variant='outlined' id="cg_field_blood" type="" value={cgObj.blood || ''} onChange={(e) => setCgObj({ ...cgObj, blood: e.target.value })}></TextField>
+                        <TextField variant='outlined' id="cg_field_blood" type="" value={cgObj.blood || ''} onChange={(e) => setCgObj({ ...cgObj, blood: e.target.value })}></TextField>
                     </Grid>
+                    <Grid item xs={12}><Divider /></Grid>
                     <div hidden id='cg_field_attributes' />
-                    <Grid item xs={12}><h2>Attributs</h2></Grid>
+                    <Grid item xs={12}><h1>Attributs</h1></Grid>
                     {
                         Object.keys(attributes).map((attr) => {
                             return (
                                 <Grid item xs={4}>
+                                    <h3>{attributes[attr]}</h3>
                                     <CgCheckbox name={"attributes_" + attr} />
-                                    <TextField label={attributes[attr]} variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
+                                    <TextField variant='outlined' type="" value={cgObj.attributes[attr] || ''} onChange={(e) => { changeObjValue('attributes', attr, e.target.value) }}></TextField>
                                 </Grid>
                             )
                         })
                     }
+                    <Grid item xs={12}><Divider /></Grid>
                     <div hidden id='cg_field_comps' />
-                    <Grid item xs={12}><h2>Compétences</h2></Grid>
+                    <Grid item xs={12}><h1>Compétences</h1></Grid>
                     {
                         Object.keys(comps).map((comp) => {
                             return (
                                 <Grid item xs={4}>
+                                    <h3>{comps[comp]}</h3>
                                     <CgCheckbox name={"comps_" + comp} />
-                                    <TextField label={comps[comp]} variant='outlined' type="" value={cgObj.comps[comp] || ''} onChange={(e) => { changeObjValue('comps', comp, e.target.value) }}></TextField>
+                                    <TextField variant='outlined' type="" value={cgObj.comps[comp] || ''} onChange={(e) => { changeObjValue('comps', comp, e.target.value) }}></TextField>
                                 </Grid>
                             )
                         })
                     }
-                    <Grid item xs={12}><h2>Spécialisations</h2></Grid>
+                    <Grid item xs={12}><Divider /></Grid>
+                    <Grid item xs={12}><h1>Spécialisations</h1></Grid>
                     {
                         cgObj.specs.map((spec, ind) => {
                             let compsCopy = comps;

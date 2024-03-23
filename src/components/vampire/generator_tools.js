@@ -84,6 +84,18 @@ export async function cg_vampire_attributes(...args) {
     let attributesList = ['strength', 'dexterity', 'stamina', 'charisma', 'manipulation', 'composure', 'intelligence', 'cunning', 'resolve'];
     let points = [];
     switch (difficulty) {
+        case 0:
+            points = ["2", "2", "1", "1", "1", "1", "1", "1", "1"];
+            break;
+        case 1:
+            points = ["3", "3", "2", "2", "2", "1", "1", "1", "1"];
+            break;
+        case 2:
+            points = ["4", "3", "3", "2", "2", "1", "1", "1", "1"];
+            break;
+        case 3:
+            points = ["5", "5", "4", "4", "3", "3", "2", "2", "2"];
+            break;
         case 4:
             points = ["4", "3", "3", "2", "2", "1", "1", "1", "1"];
             break;
@@ -166,6 +178,26 @@ export async function cg_vampire_comps(...args) {
     let specs = 0;
 
     switch (difficulty) {
+        case 0:
+            maxComps = 8;
+            specs = 0;
+            points = ["2", "2", "2", "1", "1", "1", "1", "1"];
+            break;
+        case 1:
+            maxComps = 12;
+            specs = 0;
+            points = ["3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1", "1"];
+            break;
+        case 2:
+            maxComps = 14;
+            specs = 1;
+            points = ["4", "4", "3", "3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1"];
+            break;
+        case 3:
+            maxComps = 15;
+            specs = 3;
+            points = ["5", "4", "4", "4", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2"];
+            break;
         case 4:
             maxComps = 14;
             specs = 1;
