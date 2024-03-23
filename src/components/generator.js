@@ -59,6 +59,7 @@ const Generator = () => {
     const { vertical, horizontal, open } = snackState;
 
     const updateCgObj = (cgObj) => {
+        console.log(cgObj)
         setCharacterState({ ...characterState, cg_obj: cgObj })
     }
 
@@ -110,7 +111,6 @@ const Generator = () => {
             return axios.post(prefix + '/cg/v1/Save', JSON.stringify(characterState), {
                 headers: {
                     "Content-Type": "application/json; charset= UTF-8",
-                    'X-WP-Nonce': window.wpnonce
                 }
             })
         },

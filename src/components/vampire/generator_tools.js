@@ -143,56 +143,60 @@ export async function cg_vampire_skills(...args) {
     let difficulty = args[1];
     let lockedSkills = args[2];
     let cgObj = args[3];
-    let newSkills = cgObj['skills']
-    let skillList = Skills.map(a => a.id);
+    let newSkills = cgObj['skills'];
+    let skillList = [];
     let points = [];
     let maxSkills = 0;
-    let specs = 0;
+    let maxSpecs = 0;
 
     switch (difficulty) {
         case 0:
             maxSkills = 8;
-            specs = 0;
+            maxSpecs = 0;
             points = ["2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 1:
             maxSkills = 12;
-            specs = 0;
+            maxSpecs = 0;
             points = ["3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 2:
             maxSkills = 14;
-            specs = 1;
+            maxSpecs = 1;
             points = ["4", "4", "3", "3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1"];
             break;
         case 3:
             maxSkills = 15;
-            specs = 3;
+            maxSpecs = 3;
             points = ["5", "4", "4", "4", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2"];
             break;
         case 4:
             maxSkills = 14;
-            specs = 1;
+            maxSpecs = 1;
             points = ["4", "4", "3", "3", "3", "2", "2", "2", "2", "1", "1", "1", "1", "1"];
             break;
         case 5:
             maxSkills = 15;
-            specs = 3;
+            maxSpecs = 3;
             points = ["5", "4", "4", "4", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2"];
             break;
         case 6:
             maxSkills = 22;
-            specs = 5;
+            maxSpecs = 5;
             points = ["5", "5", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2", "2", "2"];
             break;
         case 7:
             maxSkills = 27;
-            specs = 8;
+            maxSpecs = 8;
             points = ["5", "5", "5", "5", "4", "4", "4", "4", "4", "4", "4", "3", "3", "3", "3", "3", "3", "3", "3", "3", "3", "2", "2", "2", "2", "2", "2"];
             break;
     }
 
     maxSkills -= lockedSkills.length;
+
+    for (var skill of Skills) {
+        skillList.push(String(skill['id']));
+    }
 
     // Removes all locked skills from generation
     for (var lockedSkill of lockedSkills) {
@@ -224,25 +228,27 @@ export async function cg_vampire_skills(...args) {
 
     cgObj["skills"] = newSkills;
 
-    /*
+    // Get skills that are allowed to have a spec
     let specsAvailableForSkill = []
     for (var skill of Object.keys(newSkills)) {
         if (parseInt(newSkills[skill]) > 0)
-            specsAvailableForSkill.push(skill)
+            // Push the skill as many times as it has points
+            for (var skillLvl = 0; skillLvl < newSkills[skill]; skillLvl++) {
+                specsAvailableForSkill.push(skill)
+            }
     }
 
     var specializationsCopy = JSON.parse(
         JSON.stringify(Specializations),
     );
-    console.log(specsAvailableForSkill);
     var newSpecs = [];
 
-    for (var i = 0; i < specs; i++) {
+    for (var i = 0; i < maxSpecs; i++) {
         var skill = specsAvailableForSkill[Math.floor(Math.random() * specsAvailableForSkill.length)];
         var spec = specializationsCopy[skill][Math.floor(Math.random() * specializationsCopy[skill].length)];
         newSpecs.push({
-            'Comp': skill,
-            "Spec": spec
+            'comp': parseInt(skill),
+            "spec": spec
         });
 
         var indexComp = specsAvailableForSkill.indexOf(skill);
@@ -252,7 +258,6 @@ export async function cg_vampire_skills(...args) {
     }
 
     cgObj['specs'] = newSpecs;
-    */
 
     return await cgObj;
 }
