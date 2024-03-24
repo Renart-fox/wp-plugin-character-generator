@@ -372,7 +372,7 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
                             <TextField
                                 select
                                 label="Compétence"
-                                value={spec['comp'] || ''}
+                                value={spec['comp']}
                                 onChange={(e) => { changeSpecCompValue(ind, e.target.value) }}
                                 sx={{ minWidth: '50ch' }}
                             >
@@ -403,10 +403,11 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
                         {
                             cgObj.disciplines.map((disc, discInd) => (
                                 <Grid item xs={4}>
+                                    {/*CgCheckbox name={"disciplines_" + disc['id']} />*/}
                                     <TextField
                                         select
                                         label="Discipline"
-                                        value={disc['id'] || ''}
+                                        value={disc['id']}
                                         onChange={(e) => { changeDiscDiscValue(discInd, e.target.value) }}
                                         sx={{ minWidth: '35ch' }}
                                     >

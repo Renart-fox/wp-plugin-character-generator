@@ -337,7 +337,8 @@ export const Powers = {
             "level": 2,
             "disc": 8,
             "power_level": 5,
-            "name": "Union de la Terre"
+            "name": "Union de la Terre",
+            "need": "Fusion avec la Terre"
         }],
         "prerequisites": []
     },
@@ -346,7 +347,7 @@ export const Powers = {
         2: ["Prémonition"],
         3: ["Lecture de l'Âme", "Partage des Sens"],
         4: ["Psychométrie"],
-        5: ["Clarivoyance", "Télépathie"],
+        5: ["Clairvoyance", "Télépathie"],
         "amalgames": [{
             "level": 1,
             "disc": 4,
@@ -441,7 +442,8 @@ export const Powers = {
         3: ["Aura de Putréfaction", "Sombre Vision", "Toucher des Abysses"],
         4: ["Linceul Stygien", "Peste Nécrotique"],
         5: ["Avatar Ténébreux", "Chemin des Abysses", "Esprit Flétri", "Skuld Accomplie"],
-        'amalgames': []
+        'amalgames': [],
+        "prerequisites": []
     },
     6: {
         1: ["Manteau d'Ombre", "Silence de la Mort"],
@@ -509,7 +511,8 @@ export const Powers = {
         {
             "need": "Fusion avec la Terre",
             "power_level": 5,
-            "name": "Union de la Terre"
+            "name": "Union de la Terre",
+            "amalgame": true
         }]
     },
     9: {

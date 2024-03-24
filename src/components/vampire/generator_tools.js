@@ -1,4 +1,4 @@
-import { Clans, Predations, Skills, Specializations } from './vampire_enum';
+import { Clans, Predations, Skills, Specializations, ClansDisciplines, Disciplines, Powers } from './vampire_enum';
 import axios from 'axios';
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
@@ -274,7 +274,124 @@ export async function cg_vampire_disciplines(...args) {
     let difficulty = args[1];
     let lockedDisciplines = args[2];
     let cgObj = args[3];
+    let newDiscs = [];
+    let clan = cgObj.clan;
+    let allDisciplines = [...Disciplines]
+    // Sorts disciplines in order to remove them effectively later
+    let clanDisciplines = [...ClansDisciplines[clan]].sort(function (a, b) { return a - b });
+    let powersLvl = []
+    let maxDiscs = 0;
+    let allPowers = JSON.parse(
+        JSON.stringify(Powers),
+    );
 
+    // Remove forced disciplines
+    for (var i = 0; i < 3; i++) {
+        allDisciplines.splice(clanDisciplines[i] - i, 1)
+    }
+
+    switch (difficulty) {
+        case 4:
+            maxDiscs = 2;
+            powersLvl = [2, 1];
+            // Remove 1 discipline
+            clanDisciplines.splice(Math.floor(Math.random() * clanDisciplines.length), 1)
+            break;
+        case 5:
+            maxDiscs = 3;
+            powersLvl = [3, 2, 2];
+            break;
+        case 6:
+            maxDiscs = 4;
+            powersLvl = [4, 3, 2, 2];
+            // Adds one discipline
+            clanDisciplines.push(allDisciplines[Math.floor(Math.random() * allDisciplines.length)]["id"])
+            break;
+        case 7:
+            maxDiscs = 6;
+            powersLvl = [5, 4, 4, 3, 2, 2];
+            // Adds two disciplines
+            var index = Math.floor(Math.random() * allDisciplines.length);
+            clanDisciplines.push(allDisciplines[index]["id"]);
+            allDisciplines.splice(index, 1);
+            index = Math.floor(Math.random() * allDisciplines.length)
+            clanDisciplines.push(allDisciplines[index]["id"])
+            allDisciplines.splice(index, 1);
+            clanDisciplines.push(allDisciplines[Math.floor(Math.random() * allDisciplines.length)]["id"])
+            break;
+        default:
+            maxDiscs = 1;
+            powersLvl = [1];
+            break;
+    }
+
+    let characterDisc = [...clanDisciplines];
+
+    for (var i = 0; i < maxDiscs; i++) {
+        var lvlInd = Math.floor(Math.random() * powersLvl.length);
+        var lvl = powersLvl[lvlInd];
+        var discInd = Math.floor(Math.random() * clanDisciplines.length)
+        var disc = clanDisciplines[discInd];
+        powersLvl.splice(lvlInd, 1);
+        clanDisciplines.splice(discInd, 1);
+
+        newDiscs.push({
+            id: disc,
+            level: lvl,
+            name: Disciplines[disc]['name'],
+            powers: ["", "", "", "", ""]
+        });
+    }
+
+    var availablePowers = {};
+    for (var disc of newDiscs) {
+        availablePowers[disc.id] = allPowers[disc.id];
+    }
+
+    var waitingForPre = []
+
+    // First we check if any discipline lvl will grant us future powers
+    for (var disc of newDiscs) {
+        for (var amalgame of allPowers[disc.id]["amalgames"]) {
+            if (disc.level >= amalgame.level) {
+                if (characterDisc.includes(amalgame.disc)) {
+                    if (Object.keys(amalgame).includes("need")) {
+                        waitingForPre.push(amalgame.need);
+                    }
+                    else {
+                        availablePowers[amalgame.disc][amalgame.power_level].push(amalgame.name)
+                    }
+                }
+            }
+        }
+    }
+
+    console.log(availablePowers);
+
+    // Attributions powers to disciplines, lvl by lvl
+    for (var discLvl = 1; discLvl < 6; discLvl++) {
+        for (var disc of newDiscs) {
+            if (disc.level >= discLvl) {
+                var powersAtLvl = availablePowers[disc.id][discLvl];
+                var powerInd = Math.floor(Math.random() * powersAtLvl.length);
+                var powerName = availablePowers[disc.id][discLvl][powerInd]
+                disc.powers[discLvl - 1] = powerName;
+                availablePowers[disc.id][discLvl].splice(powerInd, 1);
+                for (var pre of allPowers[disc.id]["prerequisites"]) {
+                    if (pre.need == powerName) {
+                        if (Object.keys(amalgame).includes("amalgame") && waitingForPre.includes(powerName)) {
+                            availablePowers[disc.id][pre.power_level].push(pre.name)
+                        }
+                        else {
+                            availablePowers[disc.id][pre.power_level].push(pre.name)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    cgObj.disciplines = newDiscs;
 
     return await cgObj;
 }
