@@ -59,8 +59,11 @@ const Generator = () => {
     const { vertical, horizontal, open } = snackState;
 
     const updateCgObj = (cgObj) => {
-        console.log(cgObj)
         setCharacterState({ ...characterState, cg_obj: cgObj })
+    }
+
+    const updateName = (name) => {
+        setCharacterState({ ...characterState, name: name })
     }
 
     const handleSnackClose = (event, reason) => {
@@ -119,11 +122,11 @@ const Generator = () => {
     })
 
     const generateCharacter = async () => {
-        let nameChecked = document.querySelector('[value="characterName_checkbox"]').checked;
+        /*let nameChecked = document.querySelector('[value="characterName_checkbox"]').checked;
         if (!nameChecked) {
             const response = await axios.get(prefix + '/cg/v1/RandomName?system=' + characterState.system);
             setCharacterState({ ...characterState, name: response.data["name"] })
-        }
+        }*/
         setSignal(Date.now())
     }
 
@@ -134,7 +137,7 @@ const Generator = () => {
             case "2":
                 return <h1>Cyberpunk RED</h1>
             case "3":
-                return <VampireGenerator signal={signal} update={updateCgObj} startingCgObj={characterState.cg_obj} disableSystemChoice={setSystemSelectDisabled} />
+                return <VampireGenerator signal={signal} update={updateCgObj} changeName={updateName} startingCgObj={characterState.cg_obj} disableSystemChoice={setSystemSelectDisabled} />
         }
 
     };

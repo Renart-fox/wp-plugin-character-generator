@@ -58,6 +58,41 @@ export const Clans = [
     {
         "id": 14,
         "name": "Ventrue"
+    },
+    {
+        "id": 15,
+        "name": "Caitiff"
+    }
+]
+
+export const Origins = [
+    {
+        "id": 0,
+        "name": "Anglais"
+    },
+    {
+        "id": 1,
+        "name": "Indien"
+    },
+    {
+        "id": 2,
+        "name": "Pologne"
+    },
+    {
+        "id": 3,
+        "name": "Irlande"
+    },
+    {
+        "id": 4,
+        "name": "Nigeria"
+    },
+    {
+        "id": 5,
+        "name": "Pakistan"
+    },
+    {
+        "id": 6,
+        "name": "Jamaïque"
     }
 ]
 
@@ -72,7 +107,13 @@ export const Predations = {
     7: 'Parasite domestique',
     8: 'Reine de la nuit',
     9: 'Succube',
-    10: 'Extortion'
+    10: 'Extortion',
+    11: 'Chausse-Trappe',
+    12: 'Faucheur',
+    13: 'Montero',
+    14: 'Pilleur de tombes',
+    15: 'Poursuivant',
+    16: 'Racketteur',
 }
 
 export const Attributes = {
@@ -318,6 +359,7 @@ export const ClansDisciplines = {
     12: [1, 3, 10],
     13: [0, 3, 8],
     14: [3, 4, 7],
+    15: []
 }
 
 export const Powers = {

@@ -1,4 +1,4 @@
-import { Clans, Predations, Skills, Specializations, ClansDisciplines, Disciplines, Powers } from './vampire_enum';
+import { Clans, Predations, Skills, Specializations, ClansDisciplines, Disciplines, Powers, Origins } from './vampire_enum';
 import axios from 'axios';
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
@@ -57,9 +57,52 @@ export async function cg_vampire_sire() {
     return await cg_vampire_name();
 }
 
-export async function cg_vampire_name() {
-    const response = await axios.get(prefix + '/cg/v1/RandomName?system=3');
+export async function cg_vampire_name_by_origin(origin) {
+    const response = await axios.get(prefix + '/cg/v1/RandomName?origin=' + origin);
     return response.data["name"];
+}
+
+export async function cg_vampire_name() {
+    const response = await axios.get(prefix + '/cg/v1/RandomName');
+    return response.data["name"];
+}
+
+export async function cg_vampire_origin(...args) {
+    let lockedElements = args[2];
+    let newCgObj = args[3];
+    let newName = "";
+    let newOrigin = newCgObj.origin;
+    let generateNewName = true;
+    let generateOrigin = true;
+
+    if (lockedElements.length == 2) {
+        newName = lockedElements[1];
+        generateNewName = false;
+    }
+    else if (lockedElements.length != 0 && lockedElements[0] != "checkbox") {
+        newName = lockedElements[0];
+        generateNewName = false;
+    }
+
+    if (lockedElements.length != 0 && lockedElements[0] == "checkbox") {
+        generateOrigin = false;
+    }
+
+    if (generateOrigin) {
+        newOrigin = Math.floor(Math.random() * Origins.length)
+        newCgObj.origin = newOrigin;
+    }
+
+    console.log(newOrigin)
+
+    if (generateNewName) {
+        newName = await cg_vampire_name_by_origin(Origins[newCgObj.origin].name)
+    }
+
+    return await {
+        'name': newName,
+        'cgObj': newCgObj
+    };
 }
 
 export async function cg_vampire_blood(...args) {
@@ -280,15 +323,26 @@ export async function cg_vampire_disciplines(...args) {
     // Sorts disciplines in order to remove them effectively later
     let clanDisciplines = [...ClansDisciplines[clan]].sort(function (a, b) { return a - b });
     let powersLvl = []
+    let startingDiscWeight = 6;
     let maxDiscs = 0;
     let allPowers = JSON.parse(
         JSON.stringify(Powers),
     );
 
+    if (clanDisciplines.length == 0) {
+        for (var i = 0; i < 3; i++) {
+            let value = Math.floor(Math.random() * allDisciplines.length);
+            allDisciplines.splice(value, 1)
+            clanDisciplines.push(value)
+        }
+    }
+
     // Remove forced disciplines
     for (var i = 0; i < 3; i++) {
         allDisciplines.splice(clanDisciplines[i] - i, 1)
     }
+
+    let loopLength = 0
 
     switch (difficulty) {
         case 4:
@@ -305,11 +359,23 @@ export async function cg_vampire_disciplines(...args) {
             maxDiscs = 4;
             powersLvl = [4, 3, 2, 2];
             // Adds one discipline
+            loopLength = clanDisciplines.length;
+            for (var i = 0; i < startingDiscWeight; i++) {
+                for (var ind = 0; ind < loopLength; ind++) {
+                    clanDisciplines.push(clanDisciplines[ind])
+                }
+            }
             clanDisciplines.push(allDisciplines[Math.floor(Math.random() * allDisciplines.length)]["id"])
             break;
         case 7:
             maxDiscs = 6;
             powersLvl = [5, 4, 4, 3, 2, 2];
+            loopLength = clanDisciplines.length;
+            for (var i = 0; i < startingDiscWeight; i++) {
+                for (var ind = 0; ind < loopLength; ind++) {
+                    clanDisciplines.push(clanDisciplines[ind])
+                }
+            }
             // Adds two disciplines
             var index = Math.floor(Math.random() * allDisciplines.length);
             clanDisciplines.push(allDisciplines[index]["id"]);
@@ -325,15 +391,17 @@ export async function cg_vampire_disciplines(...args) {
             break;
     }
 
+    console.log(clanDisciplines)
     let characterDisc = [...clanDisciplines];
 
     for (var i = 0; i < maxDiscs; i++) {
-        var lvlInd = Math.floor(Math.random() * powersLvl.length);
+        var lvlInd = 0//Math.floor(Math.random() * powersLvl.length);
         var lvl = powersLvl[lvlInd];
         var discInd = Math.floor(Math.random() * clanDisciplines.length)
         var disc = clanDisciplines[discInd];
         powersLvl.splice(lvlInd, 1);
         clanDisciplines.splice(discInd, 1);
+        clanDisciplines = clanDisciplines.filter(a => a != disc);
 
         newDiscs.push({
             id: disc,

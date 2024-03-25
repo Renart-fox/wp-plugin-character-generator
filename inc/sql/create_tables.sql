@@ -24,10 +24,11 @@ CREATE TABLE IF NOT EXISTS wp_cg_characters_systems (
 		FOREIGN KEY (systemId) REFERENCES wp_cg_systems(id)
 );
 /
-CREATE TABLE IF NOT EXISTS wp_cg_v5e_names(
+CREATE TABLE IF NOT EXISTS wp_cg_names(
     id mediumint(9) NOT NULL,
-    first_name varchar(50) NOT NULL,
-    last_name varchar(50) NOT NULL,
+    origin varchar(50) NOT NULL,
+    sName varchar(50) NOT NULL,
+    sType varchar(50) NOT NULL,
 
     PRIMARY KEY(id)
 );

@@ -2,7 +2,7 @@ const { Component, render } = wp.element;
 
 import { useState, useEffect } from 'react';
 
-import { Attributes, Skills, Disciplines, Clans } from './vampire_enum';
+import { Attributes, Skills, Disciplines, Clans, Origins } from './vampire_enum';
 
 import { Grid, TextField, MenuItem, Button, Checkbox } from '@mui/material';
 import CgCheckbox from '../checkbox/cg_checkbox';
@@ -12,11 +12,12 @@ import Divider from '@mui/material/Divider';
 
 const prefix = window.location.href.includes('localhost') ? '/wordpress/wp-json' : '/wp-json';
 
-export default function VampireGenerator({ signal, update, startingCgObj, disableSystemChoice }) {
+export default function VampireGenerator({ signal, update, startingCgObj, disableSystemChoice, changeName }) {
 
     const [cgObj, setCgObj] = React.useState({
         'type': 0,
         'goule': false,
+        'origin': 0,
         'predation': "",
         'clan': 0,
         'sire': "",
@@ -181,8 +182,20 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
                         lockedElements.push(cName);
                     }
                 }
-                let res = await cgUtils.executeFunctionByName(name, cgUtils, cgObj.type, cgObj.difficulty, lockedElements, { ...newCgObj });
-                newCgObj = res;
+                if (simpleName == "origin") {
+                    let nameChecked = document.querySelector('[value="characterName_checkbox"]').checked;
+                    if (nameChecked) {
+                        let name = document.getElementById('cg-data-characterName').value;
+                        lockedElements.push(name);
+                    }
+                    let res = await cgUtils.executeFunctionByName(name, cgUtils, cgObj.type, cgObj.difficulty, lockedElements, { ...newCgObj });
+                    changeName(res.name);
+                    newCgObj = res.cgObj;
+                }
+                else {
+                    let res = await cgUtils.executeFunctionByName(name, cgUtils, cgObj.type, cgObj.difficulty, lockedElements, { ...newCgObj });
+                    newCgObj = res;
+                }
             }
         }
         setCgObj({ ...newCgObj });
@@ -214,13 +227,11 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
 
     const changeDiscPower = (discInd, powerInd, value) => {
         let newCgObj = { ...cgObj };
-        let discPowers = newCgObj.disciplines[discInd];
-        const newDiscPowers = [
-            ...discPowers.slice(0, powerInd),
-            value,
-            ...discPowers.slice(powerInd)
-        ];
-        newCgObj.disciplines[discInd] = newDiscPowers;
+        let discPowers = newCgObj.disciplines[discInd]['powers'];
+        let before = discPowers.slice(0, powerInd);
+        before.push(value);
+        let after = discPowers.slice(powerInd + 1);
+        newCgObj.disciplines[discInd]['powers'] = before.concat(after);
         setCgObj({ ...newCgObj });
     }
 
@@ -230,6 +241,23 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
 
     return (
         <>
+            <Grid item xs={12}>
+                <CgCheckbox name={"origin"} />
+                <TextField
+                    id="cg_field_origin"
+                    select
+                    label="Origine"
+                    value={cgObj.origin}
+                    onChange={(e) => { setCgObj({ ...cgObj, origin: e.target.value }); }}
+                    sx={{ minWidth: '50ch' }}
+                >
+                    {[...Origins].sort(function (a, b) { return a.name.localeCompare(b.name) }).map((option) => (
+                        <MenuItem key={option.id} value={option.id}>
+                            {option.name}
+                        </MenuItem>
+                    ))}
+                </TextField>
+            </Grid>
             <TextField
                 id="cg-vampire-type"
                 select
@@ -298,17 +326,17 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
 
                     (cgObj.type == 1 || cgObj.goule) && <>
                         <Grid item xs={4}>
-                            <h3>{cgObj.type == 1 ? "Clan" : "Clan de lae Maître·sse"}</h3>
+                            <h3>{cgObj.type == 1 ? "Clan" : "Clan du Domitor"}</h3>
                             <CgCheckbox name="clan" />
                             <TextField
                                 id="cg_field_clan"
                                 select
                                 value={cgObj.clan}
-                                label={cgObj.type == 1 ? "Clan" : "Clan de lae Maître·sse"}
+                                label={cgObj.type == 1 ? "Clan" : "Clan du Domitor"}
                                 onChange={(e) => { setCgObj({ ...cgObj, clan: e.target.value }); }}
                                 sx={{ minWidth: '30ch' }}
                             >
-                                {Clans.map((clan) => (
+                                {[...Clans].sort(function (a, b) { return a.name.localeCompare(b.name) }).map((clan) => (
                                     <MenuItem key={clan.id} value={clan.id}>
                                         {clan.name}
                                     </MenuItem>
