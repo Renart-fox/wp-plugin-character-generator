@@ -142,14 +142,31 @@ const Generator = () => {
 
     };
 
+    const jsonExport = () => {
+        console.log("Starting json export");
+        var characterData = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(characterState));
+        var downloadAnchorNode = document.createElement('a');
+        downloadAnchorNode.setAttribute("href", characterData);
+        downloadAnchorNode.setAttribute("download", characterState.name + ".json");
+        document.body.appendChild(downloadAnchorNode); // required for firefox
+        downloadAnchorNode.click();
+        downloadAnchorNode.remove();
+    }
+
     return (
         !isLoading && <>
             <Grid container spacing={0} sx={{ m: 2 }}>
-                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid item xs={5} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button variant="contained" onClick={() => generateCharacter()} sx={{ mr: '1rem' }}>Lancer les dés !</Button>
                 </Grid>
-                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid item xs={5} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button variant="contained" onClick={() => { mutation.mutate() }}>Sauvegarder le personnage</Button>
+                </Grid>
+                <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={jsonExport}>Exporter en JSON</Button>
+                </Grid>
+                <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button disabled variant="contained" onClick={() => { }}>Exporter en PDF</Button>
                 </Grid>
                 <Grid item xs={12} sx={{ m: 2 }}><Divider /></Grid>
                 <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -182,11 +199,17 @@ const Generator = () => {
                     </div>
                 </Grid>
                 <Grid item xs={12} sx={{ m: 2 }}><Divider /></Grid>
-                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid item xs={5} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button variant="contained" onClick={() => generateCharacter()} sx={{ mr: '1rem' }}>Lancer les dés !</Button>
                 </Grid>
-                <Grid item xs={6} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Grid item xs={5} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Button variant="contained" onClick={() => { mutation.mutate() }}>Sauvegarder le personnage</Button>
+                </Grid>
+                <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button variant="contained" onClick={jsonExport}>Exporter en JSON</Button>
+                </Grid>
+                <Grid item xs={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                    <Button disabled variant="contained" onClick={() => { }}>Exporter en PDF</Button>
                 </Grid>
             </Grid >
 
