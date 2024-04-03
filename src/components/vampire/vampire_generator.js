@@ -344,7 +344,7 @@ export default function VampireGenerator({ signal, update, startingCgObj, disabl
                             </TextField>
                         </Grid>
                         <Grid item xs={4}>
-                            <h3>{cgObj.type == 1 ? "Sire/Dame" : "Maître·sse"}</h3>
+                            <h3>{cgObj.type == 1 ? "Sire/Dame" : "Domitor"}</h3>
                             <CgCheckbox name="sire" />
                             <TextField variant='outlined' id="cg_field_sire" type="" value={cgObj.sire || ''} onChange={(e) => setCgObj({ ...cgObj, sire: e.target.value })}></TextField>
                         </Grid>
