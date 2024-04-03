@@ -364,11 +364,11 @@ export const ClansDisciplines = {
 
 export const Powers = {
     0: {
-        1: ["Lier le famulus", "Sentir la Bête"],
+        1: ["Lier le Famulus", "Sentir la Bête"],
         2: ["Murmures Sauvages"],
         3: ["Dompter la Bête", "Festin Animal"],
         4: ["Soumission de l'Esprit"],
-        5: ["Hégémonie animale", "Lâcher la Bête"],
+        5: ["Hégémonie Animale", "Lâcher la Bête"],
         "amalgames": [{
             "level": 1,
             "disc": 4,
@@ -573,7 +573,7 @@ export const Powers = {
     },
     10: {
         1: ["Goût du Sang", "Vitae Corrosive"],
-        2: ["Éteindre la vitae"],
+        2: ["Éteindre la Vitae"],
         3: ["Maturation du Sang", "Toucher du Scorpion"],
         4: ["Vol de Vitae"],
         5: ["Caresse de Baal", "Chaudron de Sang"],
