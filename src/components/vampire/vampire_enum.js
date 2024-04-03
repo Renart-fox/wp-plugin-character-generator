@@ -161,7 +161,7 @@ export const Skills = [
     },
     {
         "id": 6,
-        "name": "athletism",
+        "name": "athletics",
         "fullname": "Athlétisme"
     },
     {
